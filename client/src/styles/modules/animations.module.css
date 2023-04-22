@@ -1,0 +1,19 @@
+.arrow-right-animation {
+  transition: tranform 1s ease-in-out color 0.2s ease-in-out;
+}
+
+.arrow-right-animation:hover svg {
+  animation: arrow-right 1s infinite;
+}
+
+@keyframes arrow-right {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
