@@ -18,13 +18,17 @@ const CategoriesFilter = ({
     setFilter((prev: NewsFilter) => {
       const copy = { ...prev };
       if (copy["category"].includes(id)) {
-        return updateObj(
+        let updated = updateObj(
           copy,
           "category",
           prev["category"].filter((el) => el != id)
         );
+        updated = updateObj(updated, "page", 1);
+        return updated;
       } else {
-        return updateObj(copy, "category", [...prev["category"], id]);
+        let updated = updateObj(copy, "category", [...prev["category"], id]);
+        updated = updateObj(updated, "page", 1);
+        return updated;
       }
     });
   };
@@ -53,7 +57,6 @@ const CategoriesFilter = ({
 };
 
 const TitleInput = ({
-  filter,
   setFilter,
 }: {
   filter: NewsFilter;
@@ -70,19 +73,21 @@ const TitleInput = ({
             e.preventDefault();
             setFilter((prev: NewsFilter) => {
               const copy = { ...prev };
-              return updateObj(copy, "title", title);
+              let updated = updateObj(copy, "title", title);
+              updated = updateObj(updated, "page", 1);
+              return updated;
             });
           }}
         >
           <input
-            className="px-[20px] py-[10px] rounded-tl-[6px] rounded-bl-[6px] w-full text-[16px] outline-none"
+            className="px-[20px] py-[8px] rounded-tl-[6px] rounded-bl-[6px] w-full text-[16px] outline-none"
             placeholder="Введіть назву посту"
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
           />
-          <button className="px-[25px] bg-teal-500 rounded-tr-[6px] rounded-br-[6px] font-[500] text-white">
+          <button className="px-[25px] bg-teal-600 rounded-tr-[6px] rounded-br-[6px] font-[500] text-white">
             Пошук
           </button>
         </form>
@@ -91,18 +96,20 @@ const TitleInput = ({
   );
 };
 
-const NewsFilter = () => {
+const NewsFilter = ({
+  filter,
+  setFilter,
+}: {
+  filter: NewsFilter;
+  setFilter: Function;
+}) => {
   const { push, asPath } = useRouter();
-  const query = urlToQuery(asPath);
 
   const newsCategories = useSelector(
     (state: any) => state.global["news-categories"]
   );
 
-  const [filter, setFilter] = useState<NewsFilter>({
-    category: query.category ? query.category : [],
-    title: query.title ? query.title[0] : "",
-  });
+  console.log(filter);
 
   useEffect(() => {
     const queryCategory =
@@ -110,8 +117,9 @@ const NewsFilter = () => {
         ? filter.category.map((category) => `category=${category}`).join("&")
         : "";
     const queryTitle = filter.title.length != 0 ? `title=${filter.title}` : "";
+    const queryPage = filter.page > 1 ? `page=${filter.page}` : "";
 
-    const arr = [queryCategory, queryTitle].filter((el) => el != "");
+    const arr = [queryCategory, queryTitle, queryPage].filter((el) => el != "");
     const queryString = arr.join("&");
 
     const url = `${PAGE_URL}/news${

@@ -14,7 +14,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import animation from "../styles/modules/animations.module.css";
 
-const Home = ({ posts }: { posts: PostType[] | null }) => {
+const Home = ({
+  posts: { posts },
+}: {
+  posts: { posts: PostType[] | null };
+}) => {
   return (
     <>
       <Head>

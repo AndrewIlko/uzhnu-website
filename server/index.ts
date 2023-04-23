@@ -19,26 +19,36 @@ app.use(express.json());
 app.get("/posts", async (req, res) => {
   const params: any = req.query;
   const limit = +params.limit || 0;
+  const page = +params.page - 1 || 0;
   const filter: { [key: string]: any } = {};
+
   if (params.category) {
     filter["categoryID"] = {
       $in: Array.isArray(params.category) ? params.category : [params.category],
     };
   }
+
   if (params.title) {
     const title: string = params.title;
     const regex = new RegExp(title, "i");
     filter.title = regex;
   }
 
-  const posts = await (await DB())
+  const total = await (await DB())
+    .collection("news-posts")
+    .countDocuments(filter);
+
+  const posts = await (
+    await DB()
+  )
     .collection("news-posts")
     .find(filter)
     .sort({ date: -1 })
     .limit(limit)
+    .skip(page * limit)
     .toArray();
 
-  res.json(posts);
+  res.json({ posts, total, page: page + 1 });
 });
 
 app.post("/post/:id/add-view", async (req, res) => {

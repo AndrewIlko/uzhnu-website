@@ -11,20 +11,30 @@ import { URL } from "@/data";
 
 import NewsFilter from "@/components/News/NewsFilter";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Pagination from "@/components/Pagination/Pagination";
+import { urlToQuery } from "@/helpers";
 
 const NewsPage = () => {
+  const [limit, setLimit] = useState(10);
   const { asPath } = useRouter();
+  const query = urlToQuery(asPath);
+
+  const [filter, setFilter] = useState<NewsFilter>({
+    category: query.category ? query.category : [],
+    title: query.title ? query.title[0] : "",
+    page: query.page ? +query.page[0] : 1,
+  });
 
   const createFetchStr = (basicURL: string, asPath: string) => {
     return `${basicURL}${
-      asPath.split("?")[1] ? `?${asPath.split("?")[1]}&limit=10` : "?limit=10"
+      asPath.split("?")[1]
+        ? `?${asPath.split("?")[1]}&limit=${limit}`
+        : `?limit=${limit}`
     }`;
   };
 
-  const { data: posts, setURL } = useFetchData(
-    createFetchStr(`${URL}/posts`, asPath)
-  );
+  const { data, setURL } = useFetchData(createFetchStr(`${URL}/posts`, asPath));
 
   useEffect(() => {
     setURL(createFetchStr(`${URL}/posts`, asPath));
@@ -42,16 +52,24 @@ const NewsPage = () => {
         <Container>
           <div className="flex flex-col flex-1 py-[30px]">
             <div className="flex flex-col flex-1 px-[25px]">
-              <div className="flex flex-col gap-[15px] max-w-[800px] w-full">
-                <NewsFilter />
-                {posts && (
+              <div className="flex flex-col flex-1 gap-[15px] max-w-[800px] w-full">
+                <NewsFilter filter={filter} setFilter={setFilter} />
+                {data && (
                   <>
-                    <div className="flex flex-col gap-[15px]">
-                      {posts.map((post: PostType) => {
+                    <div className="flex flex-col flex-1 gap-[15px]">
+                      {data.posts.map((post: PostType) => {
                         return <Post key={uuid()} data={post} />;
                       })}
                     </div>
                   </>
+                )}
+                {data && (
+                  <Pagination
+                    total={data.total}
+                    currentPage={data.page}
+                    limit={limit}
+                    setFilter={setFilter}
+                  />
                 )}
               </div>
             </div>

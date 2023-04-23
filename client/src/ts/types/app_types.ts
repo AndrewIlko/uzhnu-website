@@ -21,6 +21,7 @@ export type Category = {
 export type NewsFilter = {
   category: string[];
   title: string;
+  page: number;
 };
 
 export type NewsCategories = {

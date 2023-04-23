@@ -51,6 +51,7 @@ app.use(express_1.default.json());
 app.get("/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const params = req.query;
     const limit = +params.limit || 0;
+    const page = +params.page - 1 || 0;
     const filter = {};
     if (params.category) {
         filter["categoryID"] = {
@@ -62,13 +63,17 @@ app.get("/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const regex = new RegExp(title, "i");
         filter.title = regex;
     }
+    const total = yield (yield DB())
+        .collection("news-posts")
+        .countDocuments(filter);
     const posts = yield (yield DB())
         .collection("news-posts")
         .find(filter)
         .sort({ date: -1 })
         .limit(limit)
+        .skip(page * limit)
         .toArray();
-    res.json(posts);
+    res.json({ posts, total, page: page + 1 });
 }));
 app.post("/post/:id/add-view", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
