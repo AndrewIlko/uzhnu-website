@@ -62,7 +62,7 @@ const Pagination = ({
       btns.push(
         <PaginationNumberBtn
           className={`${
-            currentPage == i ? "bg-teal-600 border-teal-500 text-white" : ""
+            currentPage == i ? "bg-teal-500 border-teal-500 text-white" : ""
           }`}
           clickHandler={() => {
             setFilter((prev: NewsFilter) => {
@@ -82,17 +82,19 @@ const Pagination = ({
   return (
     <>
       <div className="flex justify-center gap-[5px] text-[14px]">
-        <PaginationBtn
-          clickHandler={() => {
-            setFilter((prev: NewsFilter) => {
-              const copy = { ...prev };
-              return updateObj(copy, "page", copy["page"] - 1);
-            });
-            window.scrollTo(0, 0);
-          }}
-        >
-          Попередня
-        </PaginationBtn>
+        {currentPage != 1 && (
+          <PaginationBtn
+            clickHandler={() => {
+              setFilter((prev: NewsFilter) => {
+                const copy = { ...prev };
+                return updateObj(copy, "page", copy["page"] - 1);
+              });
+              window.scrollTo(0, 0);
+            }}
+          >
+            Попередня
+          </PaginationBtn>
+        )}
         {generateBtn()}
         {currentPage != totalPages && (
           <PaginationBtn

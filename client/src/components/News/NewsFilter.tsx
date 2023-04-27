@@ -41,7 +41,7 @@ const CategoriesFilter = ({
           return (
             <div
               className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[20px] py-[8px] border-[2px] rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
-                filter["category"].includes(id) ? "border-teal-500" : ""
+                filter["category"].includes(id) ? "border-teal-500 " : ""
               }`}
               onClick={() => handleClick(id)}
               key={id}
