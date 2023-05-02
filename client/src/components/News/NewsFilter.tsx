@@ -35,13 +35,15 @@ const CategoriesFilter = ({
 
   return (
     <>
-      <div className="w-full flex gap-x-[10px] gap-y-[10px] flex-wrap">
+      <div className="w-full flex gap-x-[5px] gap-y-[5px] flex-wrap">
         {newsCategories.data.map((category: Category) => {
           const { _id: id, name, posts } = category;
           return (
             <div
-              className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[20px] py-[8px] border-[2px] rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
-                filter["category"].includes(id) ? "border-teal-500 " : ""
+              className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[20px] py-[8px] border-[2px]  rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
+                filter["category"].includes(id)
+                  ? "border-teal-500 "
+                  : "border-neutral-100"
               }`}
               onClick={() => handleClick(id)}
               key={id}
@@ -108,8 +110,6 @@ const NewsFilter = ({
   const newsCategories = useSelector(
     (state: any) => state.global["news-categories"]
   );
-
-  console.log(filter);
 
   useEffect(() => {
     const queryCategory =

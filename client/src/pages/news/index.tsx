@@ -16,9 +16,11 @@ import Pagination from "@/components/Pagination/Pagination";
 import { urlToQuery } from "@/helpers";
 
 const NewsPage = () => {
-  const [limit, setLimit] = useState(10);
   const { asPath } = useRouter();
-  const query = urlToQuery(asPath);
+  const query = useMemo(() => {
+    return urlToQuery(asPath);
+  }, [asPath]);
+  const limit = 10;
 
   const [filter, setFilter] = useState<NewsFilter>({
     category: query.category ? query.category : [],
@@ -39,7 +41,6 @@ const NewsPage = () => {
   useEffect(() => {
     setURL(createFetchStr(`${URL}/posts`, asPath));
   }, [asPath]);
-
   return (
     <>
       <Head>

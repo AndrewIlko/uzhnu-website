@@ -21,7 +21,7 @@ body,
 }
 
 body {
-  background-color: rgb(242, 242, 242);
+  background-color: #f0f1f3;
 
   scroll-behavior: smooth;
   line-height: 1.5;

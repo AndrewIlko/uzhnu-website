@@ -14,11 +14,59 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import animation from "../styles/modules/animations.module.css";
 
-const Home = ({
-  posts: { posts },
-}: {
-  posts: { posts: PostType[] | null };
-}) => {
+type LatestNewsPropsType = {
+  posts: PostType[] | null;
+};
+
+const LatestNews = (props: LatestNewsPropsType) => {
+  const { posts } = props;
+  return (
+    <>
+      <div className="flex flex-col flex-1 gap-[15px] max-w-[800px] w-full">
+        <div className="px-[10px] text-[32px] font-[600]">
+          <h1>Останні новини</h1>
+        </div>
+        {!posts && (
+          <div className="w-full flex justify-center mt-[80px] flex-1 text-center text-[18px]">
+            <div className="flex flex-col gap-[20px]">
+              <span className="text-[56px]">😿</span>
+              <span className="font-[500]">
+                Упсссс... схоже тут нічого нема
+              </span>
+            </div>
+          </div>
+        )}
+        {posts && (
+          <div className="flex flex-col gap-[15px]">
+            {posts.map((post: PostType) => {
+              return <Post key={uuid()} data={post} />;
+            })}
+          </div>
+        )}
+        <div className="flex justify-end">
+          <Link href={"/news"}>
+            <button
+              className={`flex items-center gap-[10px] font-[500] border px-[20px] py-[10px] rounded-[8px] text-[16px] bg-neutral-800 transition-bg duration-200 text-[#fff] ${animation["arrow-right-animation"]}`}
+            >
+              Усі новини
+              <FontAwesomeIcon
+                className={`w-[12px] mt-[4px] icon`}
+                icon={faArrowRight}
+              />
+            </button>
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+};
+
+type HomePageProps = {
+  posts: PostType[] | null;
+};
+
+const Home = (props: HomePageProps) => {
+  const { posts } = props;
   return (
     <>
       <Head>
@@ -31,42 +79,7 @@ const Home = ({
         <Container>
           <div className="flex flex-col flex-1 py-[30px]">
             <div className="flex gap-[30px] px-[25px] flex-1">
-              <div className="flex flex-col flex-1 gap-[15px] max-w-[800px] w-full">
-                <div className="px-[10px] text-[32px] font-[600]">
-                  <h1>Останні новини</h1>
-                </div>
-                {!posts && (
-                  <div className="w-full flex justify-center mt-[80px] flex-1 text-center text-[18px]">
-                    <div className="flex flex-col gap-[20px]">
-                      <span className="text-[56px]">😿</span>
-                      <span className="font-[500]">
-                        Упсссс... схоже тут нічого нема
-                      </span>
-                    </div>
-                  </div>
-                )}
-                {posts && (
-                  <div className="flex flex-col gap-[15px]">
-                    {posts.map((post: PostType) => {
-                      return <Post key={uuid()} data={post} />;
-                    })}
-                  </div>
-                )}
-
-                <div className="flex justify-end">
-                  <Link href={"/news"}>
-                    <button
-                      className={`flex items-center gap-[10px] font-[500] border px-[20px] py-[10px] rounded-[8px] text-[16px] bg-neutral-800 transition-bg duration-200 text-[#fff] ${animation["arrow-right-animation"]}`}
-                    >
-                      Усі новини
-                      <FontAwesomeIcon
-                        className={`w-[12px] mt-[4px] icon`}
-                        icon={faArrowRight}
-                      />
-                    </button>
-                  </Link>
-                </div>
-              </div>
+              <LatestNews posts={posts} />
             </div>
           </div>
         </Container>
@@ -78,7 +91,9 @@ const Home = ({
 export async function getServerSideProps() {
   let posts = null;
   try {
-    posts = await axios.get(URL + "/posts?limit=10").then((res) => res.data);
+    posts = await axios
+      .get(URL + "/posts?limit=5")
+      .then((res) => res.data.posts);
   } catch (e) {
     console.log(e);
   }
