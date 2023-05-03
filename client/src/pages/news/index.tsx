@@ -41,6 +41,7 @@ const NewsPage = () => {
   useEffect(() => {
     setURL(createFetchStr(`${URL}/posts`, asPath));
   }, [asPath]);
+
   return (
     <>
       <Head>
