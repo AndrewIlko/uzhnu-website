@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/news": "pages/news.js",
-  "/about": "pages/about.js"
+  "/about/software": "pages/about/software.js",
+  "/about/it-technology": "pages/about/it-technology.js",
+  "/about/fiz-math": "pages/about/fiz-math.js"
 }

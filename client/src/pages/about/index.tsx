@@ -9,7 +9,8 @@ import image3 from "../../assets/images/about/image3.jpg";
 import image4 from "../../assets/images/about/image4.jpg";
 
 import povhanImage from "../../assets/images/people/povhan.jpg";
-import Link from "next/link";
+import DepartmentsList from "@/components/DepartmentsList";
+import DeanCard from "@/components/DeanCard";
 
 const AboutBlock = () => {
   return (
@@ -284,23 +285,6 @@ const AboutBlock = () => {
   );
 };
 
-const DeanCard = () => {
-  return (
-    <div className="bg-white rounded-[8px] p-[15px] h-fit">
-      <Image
-        className="w-full rounded-[6px] max-w-[300px] mx-auto"
-        src={povhanImage}
-        alt="photo"
-      />
-      <div className="flex flex-col text-center mt-[15px]">
-        <h1 className="text-[18px] font-[500]">Декан факультету:</h1>
-        <h1 className="text-[20px] font-[500]">Повхан Ігор Федорович</h1>
-        <h4 className="mt-[10px]">кандидат технічних наук</h4>
-      </div>
-    </div>
-  );
-};
-
 const About = () => {
   const departments = [
     {
@@ -331,23 +315,13 @@ const About = () => {
             <div className="flex gap-[30px] px-[25px] flex-1">
               <AboutBlock />
               <div className="flex flex-col h-fit sticky top-[30px] min-w-[350px]">
-                <DeanCard />
-                <div className="flex flex-col gap-[10px] mt-[30px]">
-                  {departments.map((department) => {
-                    const { title, link } = department;
-                    return (
-                      <>
-                        <Link href={link} title={title}>
-                          <div className="px-[20px] py-[15px] cursor-pointer bg-white rounded-[8px] border-[2px] border-[transparent] hover:shadow-md duration-300">
-                            <div className="line-clamp-1 font-[500] text-[14px]">
-                              {title}
-                            </div>
-                          </div>
-                        </Link>
-                      </>
-                    );
-                  })}
-                </div>
+                <DeanCard
+                  image={{ url: povhanImage }}
+                  title="Декан факультету:"
+                  fullname="Повхан Ігор Федорович"
+                  description="кандидат технічних наук"
+                />
+                <DepartmentsList className="mt-[30px]" />
               </div>
             </div>
           </div>

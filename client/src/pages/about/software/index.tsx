@@ -1,6 +1,65 @@
 import Container from "@/components/Container";
+import DeanCard from "@/components/DeanCard";
+import DepartmentsList from "@/components/DepartmentsList";
 import Main from "@/components/Main/Main";
 import Head from "next/head";
+
+import bilakImage from "../../../assets/images/people/bilak.jpg";
+
+const AboutBlock = () => {
+  return (
+    <>
+      <div className="flex flex-col max-w-[750px] rounded-[8px] bg-white pt-[24px] px-[30px] pb-[30px]">
+        <div className="px-[10px] text-[32px] font-[600]">
+          <h1 className="text-center">
+            КАФЕДРА ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ СИСТЕМ
+          </h1>
+        </div>
+        <div className="mt-[25px]">
+          <p className="leading-[24px] indent-10">
+            Кафедра програмного забезпечення систем була заснована у вересні
+            1996 року у складі тодішнього факультету інформатики (під назвою –
+            кафедра фізико-математичних дисциплін). У 2005 році кафедру було
+            реорганізовано на кафедру програмного забезпечення автоматизованих
+            систем та фізико-математичних дисциплін. У цьому ж році вона стала
+            випусковою зі спеціальності "Програмне забезпечення автоматизованих
+            систем" за освітньо-кваліфікаційними рівнями бакалавр, спеціаліст,
+            магістр. Після реорганізації факультету в 2011 році перейменована в
+            кафедру програмного забезпечення систем. На сьогодні є найбільш
+            чисельною випусковою кафедрою в складі факультету інформаційних
+            технологій з креативної та сучасної спеціальності 121 «Інженерія
+            програмного забезпечення».
+          </p>
+          <div className="flex flex-col mt-[15px] ml-[50px]">
+            <div>За час існування кафедри її завідувачами були:</div>
+            <ul className="flex flex-col gap-[10px] list-disc">
+              <li>
+                Буледза Андрій Васильович — кандидат фізико-математичних наук,
+                доцент, професор кафедри (01.09.1996 р. – 31.12.1998 р.);
+              </li>
+              <li>
+                Лавер Олександр Георгійович — кандидат фізико-математичних наук,
+                доцент, професор кафедри (01.01.1999 р. – 07.01.2009 р.);
+              </li>
+              <li>
+                Ващук Федір Григорійович — доктор технічних наук, професор
+                (08.01.2009 р. - 28.02.2014 р. ).
+              </li>
+              <li>
+                Головач Йожеф Ігнацевич — доктор технічних наук, професор
+                (01.09.2014 р. – 17.04.2018 р.)
+              </li>
+              <li>
+                Білак Юрій Юрійович – кандидат фізико - математичних наук,
+                доцент (18.04.2018 р. – по теперішній час).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const Software = () => {
   return (
@@ -14,7 +73,18 @@ const Software = () => {
       <Main>
         <Container>
           <div className="flex flex-col flex-1 py-[30px]">
-            <div className="flex gap-[30px] px-[25px] flex-1"></div>
+            <div className="flex gap-[30px] px-[25px] flex-1">
+              <AboutBlock />
+              <div className="flex flex-col h-fit sticky top-[30px] min-w-[350px]">
+                <DeanCard
+                  image={{ url: bilakImage, className: "max-w-[234px]" }}
+                  title="Завідувач кафедри:"
+                  fullname="Білак Юрій Юрійович"
+                  description="кандидат фізико-математичних наук, доцент"
+                />
+                <DepartmentsList className="mt-[30px]" />
+              </div>
+            </div>
           </div>
         </Container>
       </Main>
