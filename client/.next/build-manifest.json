@@ -25,20 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/about/fiz-math": [
+    "/admin-dashboard": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/about/fiz-math.js"
-    ],
-    "/about/it-technology": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/about/it-technology.js"
-    ],
-    "/about/software": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/about/software.js"
+      "static/chunks/pages/admin-dashboard.js"
     ]
   },
   "ampFirstPages": []

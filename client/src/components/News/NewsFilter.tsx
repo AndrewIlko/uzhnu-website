@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { updateObj, urlToQuery } from "@/helpers";
 import { PAGE_URL } from "@/data";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const CategoriesFilter = ({
   newsCategories,
@@ -40,10 +42,8 @@ const CategoriesFilter = ({
           const { _id: id, name, posts } = category;
           return (
             <div
-              className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[20px] py-[8px] border-[2px]  rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
-                filter["category"].includes(id)
-                  ? "border-teal-500 "
-                  : "border-neutral-100"
+              className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[10px] py-[10px] border-[1px]  rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
+                filter["category"].includes(id) ? "border-teal-500 " : ""
               }`}
               onClick={() => handleClick(id)}
               key={id}
@@ -70,7 +70,7 @@ const TitleInput = ({
     <>
       <div className="mt-[15px]">
         <form
-          className="flex"
+          className="flex gap-[5px]"
           onSubmit={(e) => {
             e.preventDefault();
             setFilter((prev: NewsFilter) => {
@@ -81,16 +81,24 @@ const TitleInput = ({
             });
           }}
         >
-          <input
-            className="px-[20px] py-[8px] rounded-tl-[6px] rounded-bl-[6px] w-full text-[16px] outline-none"
-            placeholder="Введіть назву посту"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-          <button className="px-[25px] bg-teal-600 rounded-tr-[6px] rounded-br-[6px] font-[500] text-white">
-            Пошук
+          <div className="flex relative w-full">
+            <FontAwesomeIcon
+              className="w-[15px] absolute left-[15px] top-[12px] pointer-events-none"
+              icon={faMagnifyingGlass}
+            />
+            <input
+              className={`px-[20px] w-full py-[8px] pl-[50px] rounded-[6px] first-line:text-[16px] outline-none before:content-[${(
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              )}]`}
+              placeholder="Введіть назву поста"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />{" "}
+          </div>
+          <button className="px-[25px] rounded-tr-[6px] rounded-br-[6px] font-[500] border rounded-[6px] bg-black text-white">
+            <span className="text-[14px]">Пошук</span>
           </button>
         </form>
       </div>

@@ -37,7 +37,7 @@ const Post = ({ data }: { data: Post }) => {
   return (
     <>
       <a href={postLink} target="_blank" onClick={() => makeViewed()}>
-        <div className="h-[200px] bg-white rounded-lg p-[16px] flex gap-[20px] shadow-sm hover:scale-[1.025] transition-transform duration-500">
+        <div className="h-[200px] bg-white rounded-lg p-[16px] flex gap-[20px]">
           <div className="min-w-[300px] h-[100%] bg-neutral-200 rounded-md overflow-hidden">
             <img
               className="max-w-[300px]"
