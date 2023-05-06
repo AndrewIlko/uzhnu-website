@@ -50,19 +50,19 @@ const Post = ({ data }: { data: Post }) => {
               <div className="text-[14px] font-[500] flex gap-[10px] items-center">
                 <FontAwesomeIcon
                   icon={faEye}
-                  className=" text-[16px] lg:text-[14px]"
+                  className="w-[16px] lg:w-[14px]"
                 />
                 <span className="text-[16px] lg:text-[14px]">
                   {countOfViews}
                 </span>
               </div>
-              <div className="text-right mr-[20px] text-[16px] lg:text-[14px] font-[600]">
+              <div className="text-right lg:mr-[20px] text-[16px] lg:text-[14px] font-[600]">
                 {categories.data.length != 0 &&
                   categories.data.find(
                     (category: any) => category["_id"] == categoryID
                   ).name}
               </div>
-              <div className="text-right mr-[20px] text-[16px] lg:text-[14px] font-[600] text-neutral-600">
+              <div className="text-right lg:mr-[20px] text-[16px] lg:text-[14px] font-[600] text-neutral-600">
                 {new Date(date).toLocaleDateString("uk-UA")}
               </div>
             </div>

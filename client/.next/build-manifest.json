@@ -30,15 +30,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/admin-dashboard": [
+    "/about": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/admin-dashboard.js"
+      "static/chunks/pages/about.js"
     ],
     "/create-post": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/create-post.js"
+    ],
+    "/news": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/news.js"
     ]
   },
   "ampFirstPages": []

@@ -3,6 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/create-post": "pages/create-post.js",
-  "/admin-dashboard": "pages/admin-dashboard.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/about": "pages/about.js",
+  "/news": "pages/news.js"
 }

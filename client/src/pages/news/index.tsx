@@ -13,7 +13,8 @@ import NewsFilter from "@/components/News/NewsFilter";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import Pagination from "@/components/Pagination/Pagination";
-import { urlToQuery } from "@/helpers";
+import { genArrWithElement, urlToQuery } from "@/helpers";
+import SkeletonPost from "@/components/Posts/SkeletonPost";
 
 const NewsPage = () => {
   const { asPath } = useRouter();
@@ -56,6 +57,7 @@ const NewsPage = () => {
             <div className="flex flex-col flex-1 px-[25px]">
               <div className="flex flex-col flex-1 gap-[15px] max-w-[800px] w-full">
                 <NewsFilter filter={filter} setFilter={setFilter} />
+                {!data && <>{genArrWithElement(10, <SkeletonPost />)}</>}
                 {data && (
                   <>
                     <div className="flex flex-col flex-1 gap-[15px]">

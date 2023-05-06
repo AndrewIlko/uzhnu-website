@@ -33,3 +33,11 @@ export const convertFileToBase64 = (file: Blob) => {
     reader.onerror = reject;
   });
 };
+
+export const genArrWithElement = (count: number, element: any) => {
+  let arr = [];
+  for (let i = 1; i <= count; i++) {
+    arr.push(element);
+  }
+  return arr;
+};
