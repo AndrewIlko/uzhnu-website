@@ -7,8 +7,18 @@ import axios from "axios";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import PostTableRow from "./PostTableRow";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { adminDashboardAction } from "@/redux/slices/adminDashboardSlice";
+import { useDispatch } from "react-redux";
+import AddPostPopUp from "./AddPostPopUp";
 
 const AdminDashboard = () => {
+  const { isAddPost } = useSelector((state: any) => state.adminDashboard);
+  const { setIsAddPost } = adminDashboardAction;
+  const dispatch = useDispatch();
+
   const [postsData, setPostsData] = useState<{
     posts: Post[];
     total: number;
@@ -41,8 +51,19 @@ const AdminDashboard = () => {
       <Main>
         <div className="flex flex-col flex-1 py-[30px]">
           <div className="flex flex-col flex-1 px-[25px]">
-            <div className="mb-[15px] font-[500] bg-white px-[15px] py-[20px] rounded-[8px]">
-              Кількість постів: {postsData.total}
+            <div className="mb-[15px] font-[500] bg-white border px-[10px] py-[10px] rounded-[8px] flex gap-[30px] items-center justify-between">
+              <div className=" bg-black px-[15px] py-[10px] text-[14px] rounded-[8px] text-white">
+                Кількість постів: {postsData.total}
+              </div>
+              <div>
+                <button
+                  className="flex items-center gap-[10px] px-[10px] py-[10px] text-[14px] bg-black rounded-[6px] text-white"
+                  onClick={() => dispatch(setIsAddPost(true))}
+                >
+                  <span>Додати пост</span>
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+              </div>
             </div>
             <table className="min-w-full divide-y divide-gray-200 bg-white rounded-[8px] overflow-hidden">
               <thead className="bg-black">
@@ -67,7 +88,7 @@ const AdminDashboard = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
+                    className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase"
                   >
                     Заголовок
                   </th>
@@ -92,6 +113,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </Main>
+      {isAddPost && <AddPostPopUp />}
     </>
   );
 };

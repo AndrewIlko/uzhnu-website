@@ -10,6 +10,7 @@ export type Post = {
   countOfViews: number;
   categoryID: string;
   date: string;
+  image?: string;
 };
 
 export type Category = {

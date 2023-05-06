@@ -32,3 +32,30 @@ body {
 .footer-grid {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
+
+.addpost-popup-animation {
+  animation: appear-from-top 0.25s ease-in-out;
+  transform-origin: top;
+}
+
+@keyframes appear-from-top {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.bg-black-animation {
+  animation: bg-black-25 0.25s ease-in;
+}
+
+@keyframes bg-black-25 {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: rgb(0, 0, 0, 0.25);
+  }
+}
