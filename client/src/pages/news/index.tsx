@@ -7,41 +7,58 @@ import { Post as PostType } from "@/ts/types/app_types";
 import Post from "@/components/Posts/Post";
 import useFetchData from "@/custom-hooks/useFetchData";
 import uuid from "react-uuid";
-import { URL } from "@/data";
+import { PAGE_URL, URL } from "@/data";
 
 import NewsFilter from "@/components/News/NewsFilter";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Pagination from "@/components/Pagination/Pagination";
-import { genArrWithElement, urlToQuery } from "@/helpers";
+import { genArrWithElement, queryToUrl, urlToQuery } from "@/helpers";
 import SkeletonPost from "@/components/Posts/SkeletonPost";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 const NewsPage = () => {
-  const { asPath } = useRouter();
+  const isFirstRender = useRef(true);
+  const limit = 10;
+  const { asPath, push } = useRouter();
+
   const query = useMemo(() => {
     return urlToQuery(asPath);
-  }, [asPath]);
-  const limit = 10;
+  }, []);
 
   const [filter, setFilter] = useState<NewsFilter>({
     category: query.category ? query.category : [],
     title: query.title ? query.title[0] : "",
-    page: query.page ? +query.page[0] : 1,
+    page: query.page ? Number(query.page[0]) : 1,
   });
 
-  const createFetchStr = (basicURL: string, asPath: string) => {
-    return `${basicURL}${
-      asPath.split("?")[1]
-        ? `?${asPath.split("?")[1]}&limit=${limit}`
-        : `?limit=${limit}`
-    }`;
+  const queryUrl = useMemo(() => {
+    return queryToUrl(filter);
+  }, [filter]);
+
+  const fetchPosts = async () => {
+    return axios
+      .get(`/posts?limit=10&${queryToUrl(filter)}`)
+      .then((res) => res.data);
   };
 
-  const { data, setURL } = useFetchData(createFetchStr(`${URL}/posts`, asPath));
+  const { data, isLoading, isError } = useQuery(
+    ["fetch-posts", filter],
+    fetchPosts
+  );
 
   useEffect(() => {
-    setURL(createFetchStr(`${URL}/posts`, asPath));
-  }, [asPath]);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    push(
+      `${PAGE_URL}/news${queryUrl.length != 0 ? `?${queryUrl}` : ""}`,
+      undefined,
+      { shallow: true }
+    );
+  }, [filter]);
 
   return (
     <>
@@ -57,7 +74,7 @@ const NewsPage = () => {
             <div className="flex flex-col flex-1 px-[25px]">
               <div className="flex flex-col flex-1 gap-[15px] max-w-[800px] w-full">
                 <NewsFilter filter={filter} setFilter={setFilter} />
-                {!data && <>{genArrWithElement(10, <SkeletonPost />)}</>}
+                {isLoading && <>{genArrWithElement(10, <SkeletonPost />)}</>}
                 {data && (
                   <>
                     <div className="flex flex-col flex-1 gap-[15px]">

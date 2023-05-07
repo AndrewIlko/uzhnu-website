@@ -1,10 +1,10 @@
+import { NewsFilter } from "./ts/types/app_types";
+
 export const updateObj = (obj: object, key: string, value: any) => {
   const copy: any = { ...obj };
   copy[key] = value;
   return copy;
 };
-
-// name=adnrew&fullanme=billy
 
 export const urlToQuery = (string: string) => {
   const result: { [key: string]: any } = {};
@@ -40,4 +40,17 @@ export const genArrWithElement = (count: number, element: any) => {
     arr.push(element);
   }
   return arr;
+};
+
+export const queryToUrl = (object: NewsFilter) => {
+  let result = "";
+  if (object.category.length) {
+    result += object.category
+      .map((category) => `category=${category}`)
+      .join("&");
+  }
+  if (object.title.length) {
+    result += `title=${object.title}`;
+  }
+  return result;
 };

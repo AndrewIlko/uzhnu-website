@@ -11,6 +11,15 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
 import Layout from "@/components/Layout";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   const navItems: NavItem[] = [
@@ -34,27 +43,29 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Provider store={store}>
-        <Layout>
-          <Header>
-            <Logo />
-            <div className="flex flex-1 justify-center">
-              <Navbar>
-                {navItems.map((item) => {
-                  const { link, title } = item;
-                  return (
-                    <NavbarItem key={uuid()} link={link}>
-                      {title}
-                    </NavbarItem>
-                  );
-                })}
-              </Navbar>
-            </div>
-          </Header>
-          <Component {...pageProps} />
-          <Footer />
-        </Layout>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Layout>
+            <Header>
+              <Logo />
+              <div className="flex flex-1 justify-center">
+                <Navbar>
+                  {navItems.map((item) => {
+                    const { link, title } = item;
+                    return (
+                      <NavbarItem key={uuid()} link={link}>
+                        {title}
+                      </NavbarItem>
+                    );
+                  })}
+                </Navbar>
+              </div>
+            </Header>
+            <Component {...pageProps} />
+            <Footer />
+          </Layout>
+        </Provider>
+      </QueryClientProvider>
     </>
   );
 }
