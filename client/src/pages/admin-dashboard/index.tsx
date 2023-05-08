@@ -1,6 +1,5 @@
 import Container from "@/components/Container";
 import Main from "@/components/Main/Main";
-import { URL } from "@/data";
 import { Post } from "@/ts/types/app_types";
 import axios from "axios";
 
@@ -13,6 +12,7 @@ import { useSelector } from "react-redux";
 import { adminDashboardAction } from "@/redux/slices/adminDashboardSlice";
 import { useDispatch } from "react-redux";
 import AddPostPopUp from "./AddPostPopUp";
+import { useQuery } from "react-query";
 
 const AdminDashboard = () => {
   const { isAddPost } = useSelector((state: any) => state.adminDashboard);
@@ -26,19 +26,11 @@ const AdminDashboard = () => {
   } | null>(null);
 
   const fetchPosts = async () => {
-    try {
-      const response = await axios.get(`${URL}/posts`);
-      setPostsData(response.data);
-    } catch (e) {
-      console.log(e);
-    }
+    const data = await axios.get(`/posts?limit=10`).then((res) => res.data);
+    return data;
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  if (!postsData) return <></>;
+  const { data } = useQuery("fetch-posts", fetchPosts);
 
   return (
     <>
@@ -53,7 +45,7 @@ const AdminDashboard = () => {
           <div className="flex flex-col flex-1 px-[25px]">
             <div className="mb-[15px] font-[500] bg-white border px-[10px] py-[10px] rounded-[8px] flex gap-[30px] items-center justify-between">
               <div className=" bg-black px-[15px] py-[10px] text-[14px] rounded-[8px] text-white">
-                Кількість постів: {postsData.total}
+                Кількість постів: {data.total}
               </div>
               <div>
                 <button
@@ -105,7 +97,7 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {postsData.posts.map((post) => {
+                {data.posts.map((post: Post) => {
                   return <PostTableRow key={post._id} data={post} />;
                 })}
               </tbody>

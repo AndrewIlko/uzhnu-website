@@ -38,9 +38,10 @@ const NewsPage = () => {
   }, [filter]);
 
   const fetchPosts = async () => {
-    return axios
+    const data = await axios
       .get(`/posts?limit=10&${queryToUrl(filter)}`)
       .then((res) => res.data);
+    return data;
   };
 
   const { data, isLoading, isError } = useQuery(

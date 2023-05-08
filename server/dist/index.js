@@ -35,69 +35,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DB = void 0;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const mongoDB = __importStar(require("mongodb"));
+const post_1 = __importDefault(require("./routes/post"));
 const port = 8000;
 const MONGODB_URL = "mongodb+srv://andriy:andriy@db.jwwluob.mongodb.net/?retryWrites=true&w=majority";
 const mongoClient = new mongoDB.MongoClient(MONGODB_URL);
-const DB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const db = yield mongoClient.db("uzhnu");
+const DB = () => {
+    const db = mongoClient.db("uzhnu");
     return db;
-});
+};
+exports.DB = DB;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.get("/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const params = req.query;
-    const limit = +params.limit || 0;
-    const page = +params.page - 1 || 0;
-    const filter = {};
-    if (params.category) {
-        filter["categoryID"] = {
-            $in: Array.isArray(params.category) ? params.category : [params.category],
-        };
-    }
-    if (params.title) {
-        const title = params.title;
-        const regex = new RegExp(title, "i");
-        filter.title = regex;
-    }
-    const total = yield (yield DB())
-        .collection("news-posts")
-        .countDocuments(filter);
-    const posts = yield (yield DB())
-        .collection("news-posts")
-        .find(filter)
-        .sort({ date: -1 })
-        .limit(limit)
-        .skip(page * limit)
-        .toArray();
-    res.json({ posts, total, page: page + 1 });
-}));
-app.post("/post/:id/add-view", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    yield (yield DB())
-        .collection("news-posts")
-        .updateOne({ _id: new mongoDB.ObjectId(`${id}`) }, { $inc: { countOfViews: 1 } });
-}));
+app.use("/post", post_1.default);
 app.get("/news-categories", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const categories = yield (yield DB())
+    const categories = yield (0, exports.DB)()
         .collection("news-categories")
         .find({})
         .toArray();
     res.json(categories);
-}));
-app.post("/create-post", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const body = req.body;
-    body.date = new Date(body.date);
-    const createdPost = yield (yield DB())
-        .collection("news-posts")
-        .insertOne(Object.assign({}, body));
-    yield (yield DB())
-        .collection("news-categories")
-        .updateOne({ _id: new mongoDB.ObjectId(`${body.categoryID}`) }, { $push: { posts: createdPost.insertedId } });
-    res.json(createdPost);
 }));
 app.listen(port, () => {
     mongoClient.connect().then(() => {
