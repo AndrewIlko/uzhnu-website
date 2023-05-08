@@ -44,13 +44,17 @@ export const genArrWithElement = (count: number, element: any) => {
 
 export const queryToUrl = (object: NewsFilter) => {
   let result = "";
-  if (object.category.length) {
-    result += object.category
-      .map((category) => `category=${category}`)
+  if (object.category!.length) {
+    result += object
+      .category!.map((category) => `category=${category}`)
       .join("&");
   }
-  if (object.title.length) {
+  if (object.title!.length) {
     result += `title=${object.title}`;
   }
+  if (object.page != 1) {
+    result += `page=${object.page}`;
+  }
+
   return result;
 };

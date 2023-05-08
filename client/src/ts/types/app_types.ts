@@ -20,9 +20,10 @@ export type Category = {
 };
 
 export type NewsFilter = {
-  category: string[];
-  title: string;
-  page: number;
+  category?: string[];
+  title?: string;
+  page?: number;
+  sortDate?: string;
 };
 
 export type NewsCategories = {

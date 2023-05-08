@@ -19,16 +19,16 @@ const CategoriesFilter = ({
   const handleClick = (id: string) => {
     setFilter((prev: NewsFilter) => {
       const copy = { ...prev };
-      if (copy["category"].includes(id)) {
+      if (copy["category"]!.includes(id)) {
         let updated = updateObj(
           copy,
           "category",
-          prev["category"].filter((el) => el != id)
+          prev["category"]!.filter((el) => el != id)
         );
         updated = updateObj(updated, "page", 1);
         return updated;
       } else {
-        let updated = updateObj(copy, "category", [...prev["category"], id]);
+        let updated = updateObj(copy, "category", [...prev["category"]!, id]);
         updated = updateObj(updated, "page", 1);
         return updated;
       }
@@ -43,7 +43,9 @@ const CategoriesFilter = ({
           return (
             <div
               className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[10px] py-[10px] border-[1px]  rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
-                filter["category"].includes(id) ? "border-teal-500 " : ""
+                filter.category && filter.category.includes(id)
+                  ? "border-teal-500 "
+                  : ""
               }`}
               onClick={() => handleClick(id)}
               key={id}
@@ -113,31 +115,9 @@ const NewsFilter = ({
   filter: NewsFilter;
   setFilter: Function;
 }) => {
-  const { push, asPath } = useRouter();
-
   const newsCategories = useSelector(
     (state: any) => state.global["news-categories"]
   );
-
-  useEffect(() => {
-    const queryCategory =
-      filter.category.length != 0
-        ? filter.category.map((category) => `category=${category}`).join("&")
-        : "";
-    const queryTitle = filter.title.length != 0 ? `title=${filter.title}` : "";
-    const queryPage = filter.page > 1 ? `page=${filter.page}` : "";
-
-    const arr = [queryCategory, queryTitle, queryPage].filter((el) => el != "");
-    const queryString = arr.join("&");
-
-    const url = `${PAGE_URL}/news${
-      queryString.length != 0 ? "?" : ""
-    }${queryString}`;
-
-    if (url != PAGE_URL + asPath) {
-      push(url, undefined, { shallow: true });
-    }
-  }, [filter]);
 
   return (
     <>

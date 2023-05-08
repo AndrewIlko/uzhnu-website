@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { Category } from "@/ts/types/app_types";
 import { Post as PostType } from "@/ts/types/app_types";
 import Post from "@/components/Posts/Post";
-import useFetchData from "@/custom-hooks/useFetchData";
 import uuid from "react-uuid";
 import { PAGE_URL, URL } from "@/data";
 
@@ -39,7 +38,7 @@ const NewsPage = () => {
 
   const fetchPosts = async () => {
     const data = await axios
-      .get(`/posts?limit=10&${queryToUrl(filter)}`)
+      .get(`/post?limit=${limit}&${queryToUrl(filter)}`)
       .then((res) => res.data);
     return data;
   };
@@ -60,6 +59,8 @@ const NewsPage = () => {
       { shallow: true }
     );
   }, [filter]);
+
+  console.log(data);
 
   return (
     <>
@@ -83,15 +84,13 @@ const NewsPage = () => {
                         return <Post key={uuid()} data={post} />;
                       })}
                     </div>
+
+                    <Pagination
+                      page={data.currentPage}
+                      total={data.totalPages}
+                      setFilter={setFilter}
+                    />
                   </>
-                )}
-                {data && (
-                  <Pagination
-                    total={data.total}
-                    currentPage={data.page}
-                    limit={limit}
-                    setFilter={setFilter}
-                  />
                 )}
               </div>
             </div>

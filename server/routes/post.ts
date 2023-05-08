@@ -6,7 +6,7 @@ const router = express.Router();
 
 interface PostQuery {
   title?: string;
-  category?: string | string[];
+  category?: string[];
   limit?: string | number;
   page?: string | number;
   sortDate?: string;

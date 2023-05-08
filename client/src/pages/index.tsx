@@ -92,7 +92,7 @@ export async function getServerSideProps() {
   let posts = null;
   try {
     posts = await axios
-      .get(URL + "/posts?limit=5")
+      .get("/post?limit=5&sortDate=desc")
       .then((res) => res.data.posts);
   } catch (e) {
     console.log(e);
