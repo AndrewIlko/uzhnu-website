@@ -9,13 +9,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { ChangeEvent, memo, useState } from "react";
 import defaultImg from "../../assets/images/other/default-news-image.png";
+import { useMutation } from "react-query";
+import axios from "axios";
 
 const EditModeRow = (props: {
   data: Post;
+  refetch: Function;
   setUpdatedPost: Function;
   setIsEdit: Function;
 }) => {
-  const { data, setIsEdit, setUpdatedPost } = props;
+  const { data, setIsEdit, setUpdatedPost, refetch } = props;
   const [post, setPost] = useState<Post>(data);
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +42,16 @@ const EditModeRow = (props: {
       }
     }
   };
+  const updatePost = async () => {
+    const response = await axios.patch(`/post/${post._id}/update`, post);
+    return response.data;
+  };
+
+  const { mutate } = useMutation(updatePost, {
+    onSuccess: () => {
+      refetch();
+    },
+  });
 
   return (
     <>
@@ -86,6 +99,12 @@ const EditModeRow = (props: {
         <td className="px-6 py-4 text-sm font-medium">
           <textarea
             className="w-full p-[5px] border max-h-[100px] min-h-[60px]"
+            onChange={(e) => {
+              setPost((prev) => {
+                const copy = { ...prev };
+                return updateObj(copy, "title", e.target.value);
+              });
+            }}
             value={post.title}
           />
         </td>
@@ -99,15 +118,22 @@ const EditModeRow = (props: {
               onClick={() => {
                 setIsEdit(false);
                 setUpdatedPost(post);
+                mutate();
               }}
             >
-              <FontAwesomeIcon className="text-green-600" icon={faFloppyDisk} />
+              <FontAwesomeIcon
+                className="text-green-600 scale-[2]"
+                icon={faFloppyDisk}
+              />
             </button>
             <button
               className="px-[15px] bg-red-200 rounded-[6px] font-[500] py-[5px] h-[40px] w-[40px] flex items-center justify-center  border-[2px] border-red-400"
               onClick={() => setIsEdit(false)}
             >
-              <FontAwesomeIcon className="text-red-600" icon={faBan} />
+              <FontAwesomeIcon
+                className="text-red-600 scale-[2]"
+                icon={faBan}
+              />
             </button>
           </div>
         </td>
@@ -116,14 +142,19 @@ const EditModeRow = (props: {
   );
 };
 
-const PostTableRow = (props: { data: Post }) => {
+const PostTableRow = (props: { data: Post; refetch: Function }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const { data } = props;
+  const { data, refetch } = props;
   const [post, setPost] = useState<Post>(data);
 
   if (isEdit) {
     return (
-      <EditModeRow data={post} setUpdatedPost={setPost} setIsEdit={setIsEdit} />
+      <EditModeRow
+        data={post}
+        setUpdatedPost={setPost}
+        setIsEdit={setIsEdit}
+        refetch={refetch}
+      />
     );
   }
 
@@ -151,7 +182,7 @@ const PostTableRow = (props: { data: Post }) => {
         </td>
         <td className="text-center px-6 py-4">
           <button onClick={() => setIsEdit(true)}>
-            <FontAwesomeIcon icon={faPenToSquare} />
+            <FontAwesomeIcon className="w-[18px]" icon={faPenToSquare} />
           </button>
         </td>
       </tr>

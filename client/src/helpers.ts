@@ -43,18 +43,22 @@ export const genArrWithElement = (count: number, element: any) => {
 };
 
 export const queryToUrl = (object: NewsFilter) => {
-  let result = "";
-  if (object.category!.length) {
-    result += object
-      .category!.map((category) => `category=${category}`)
-      .join("&");
+  let result = [];
+  if (object.category && object.category!.length) {
+    result.push(
+      object.category!.map((category) => `category=${category}`).join("&")
+    );
   }
-  if (object.title!.length) {
-    result += `title=${object.title}`;
+  if (object.title && object.title!.length) {
+    result.push(`title=${object.title}`);
   }
-  if (object.page != 1) {
-    result += `page=${object.page}`;
+  if (object.page && object.page != 1) {
+    result.push(`page=${object.page}`);
   }
-
-  return result;
+  if (
+    (object.sortDate && object.sortDate == "asc") ||
+    (object.sortDate && object.sortDate == "desc")
+  ) {
+  }
+  return result.join("&");
 };

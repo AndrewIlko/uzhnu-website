@@ -6,7 +6,7 @@ const router = express.Router();
 
 interface PostQuery {
   title?: string;
-  category?: string[];
+  category?: string | string[];
   limit?: string | number;
   page?: string | number;
   sortDate?: string;
@@ -41,7 +41,7 @@ router.get("/", async (req: Request, res: Response) => {
   page = Number(page);
 
   const totalPosts = await DB().collection("news-posts").countDocuments(filter);
-  const totalPages = Math.round(totalPosts / limit);
+  const totalPages = Math.ceil(totalPosts / limit);
 
   page = !page ? 1 : page <= 0 ? 1 : page > totalPages ? totalPages : page;
 
@@ -64,7 +64,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   res.status(200).json(post);
 });
 
-router.patch("/:id/add-view", async (req: Request, res: Response) => {
+router.post("/:id/add-view", async (req: Request, res: Response) => {
   const { id } = req.params;
   await DB()
     .collection("news-posts")
@@ -94,10 +94,14 @@ router.post("/create", async (req: Request, res: Response) => {
 
 router.patch("/:id/update", async (req: Request, res: Response) => {
   const body = req.body;
+  const id = body._id;
+  delete body.countOfViews;
+  delete body._id;
+  body.date = new Date(body.date);
 
   const updatedPost = await DB()
     .collection("news-posts")
-    .updateOne({ _id: new mongoDB.ObjectId(`${body._id}`) }, { ...body });
+    .updateOne({ _id: new mongoDB.ObjectId(`${id}`) }, { $set: body });
 
   res.status(200).json(updatedPost);
 });

@@ -238,10 +238,6 @@ const Pagination = ({
     return buttons;
   };
 
-  if (total == 1) {
-    return <></>;
-  }
-
   return (
     <>
       <div className="flex flex-col justify-center items-center gap-[5px] w-fit mx-auto">

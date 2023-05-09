@@ -38,7 +38,7 @@ const NewsPage = () => {
 
   const fetchPosts = async () => {
     const data = await axios
-      .get(`/post?limit=${limit}&${queryToUrl(filter)}`)
+      .get(`/post?sortDate=desc&limit=${limit}&${queryToUrl(filter)}`)
       .then((res) => res.data);
     return data;
   };
@@ -59,8 +59,6 @@ const NewsPage = () => {
       { shallow: true }
     );
   }, [filter]);
-
-  console.log(data);
 
   return (
     <>

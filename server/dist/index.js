@@ -50,7 +50,7 @@ const DB = () => {
 exports.DB = DB;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
-app.use(express_1.default.json());
+app.use(express_1.default.json({ limit: "10mb" }));
 app.use("/post", post_1.default);
 app.get("/news-categories", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const categories = yield (0, exports.DB)()

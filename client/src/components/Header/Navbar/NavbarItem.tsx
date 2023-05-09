@@ -4,7 +4,7 @@ const NavbarItem = ({ link, children }: { link: string; children: string }) => {
   return (
     <>
       <Link href={link}>
-        <div className="px-[15px] font-[500] py-[10px] text-[14px] text-neutral-900 transition-text duration-200 whitespace-nowrap">
+        <div className="px-[15px] font-[500] py-[10px] text-[16px] transition-text duration-200 whitespace-nowrap">
           {children}
         </div>
       </Link>

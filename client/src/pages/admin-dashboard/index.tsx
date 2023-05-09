@@ -1,10 +1,10 @@
 import Container from "@/components/Container";
 import Main from "@/components/Main/Main";
-import { Post } from "@/ts/types/app_types";
+import { NewsFilter, Post } from "@/ts/types/app_types";
 import axios from "axios";
 
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PostTableRow from "./PostTableRow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -13,24 +13,59 @@ import { adminDashboardAction } from "@/redux/slices/adminDashboardSlice";
 import { useDispatch } from "react-redux";
 import AddPostPopUp from "./AddPostPopUp";
 import { useQuery } from "react-query";
+import { PAGE_URL } from "@/data";
+import { useRouter } from "next/router";
+import { queryToUrl, urlToQuery } from "@/helpers";
+import Pagination from "@/components/Pagination/Pagination";
 
 const AdminDashboard = () => {
   const { isAddPost } = useSelector((state: any) => state.adminDashboard);
   const { setIsAddPost } = adminDashboardAction;
   const dispatch = useDispatch();
 
-  const [postsData, setPostsData] = useState<{
-    posts: Post[];
-    total: number;
-    page: number;
-  } | null>(null);
+  const isFirstRender = useRef(true);
+  const limit = 10;
+  const { asPath, push } = useRouter();
+
+  const query = useMemo(() => {
+    return urlToQuery(asPath);
+  }, []);
+
+  const [filter, setFilter] = useState<NewsFilter>({
+    title: query.title ? query.title[0] : "",
+    page: query.page ? Number(query.page[0]) : 1,
+    sortDate: query.sortData ? query.sortData : "asc",
+  });
+
+  const queryUrl = useMemo(() => {
+    return queryToUrl(filter);
+  }, [filter]);
 
   const fetchPosts = async () => {
-    const data = await axios.get(`/posts?limit=10`).then((res) => res.data);
+    const data = await axios
+      .get(`/post?sortDate=desc&limit=${limit}&${queryToUrl(filter)}`)
+      .then((res) => res.data);
     return data;
   };
 
-  const { data } = useQuery("fetch-posts", fetchPosts);
+  const { data, isLoading, refetch } = useQuery(
+    ["fetch-posts", filter],
+    fetchPosts
+  );
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    push(
+      `${PAGE_URL}/admin-dashboard${
+        queryUrl.length != 0 ? `?${queryUrl}` : ""
+      }`,
+      undefined,
+      { shallow: true }
+    );
+  }, [filter]);
 
   return (
     <>
@@ -43,65 +78,82 @@ const AdminDashboard = () => {
       <Main>
         <div className="flex flex-col flex-1 py-[30px]">
           <div className="flex flex-col flex-1 px-[25px]">
-            <div className="mb-[15px] font-[500] bg-white border px-[10px] py-[10px] rounded-[8px] flex gap-[30px] items-center justify-between">
-              <div className=" bg-black px-[15px] py-[10px] text-[14px] rounded-[8px] text-white">
-                Кількість постів: {data.total}
-              </div>
-              <div>
-                <button
-                  className="flex items-center gap-[10px] px-[10px] py-[10px] text-[14px] bg-black rounded-[6px] text-white"
-                  onClick={() => dispatch(setIsAddPost(true))}
-                >
-                  <span>Додати пост</span>
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-              </div>
-            </div>
-            <table className="min-w-full divide-y divide-gray-200 bg-white rounded-[8px] overflow-hidden">
-              <thead className="bg-black">
-                <tr>
-                  <th
-                    scope="col"
-                    className="flex items-center px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
-                  >
-                    ID
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
-                  >
-                    Дата
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
-                  >
-                    Фото
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase"
-                  >
-                    Заголовок
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-bold text-right text-gray-300 uppercase "
-                  >
-                    Переглядів
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-[60px] py-3 text-xs font-bold text-right text-gray-300 uppercase "
-                  ></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {data.posts.map((post: Post) => {
-                  return <PostTableRow key={post._id} data={post} />;
-                })}
-              </tbody>
-            </table>
+            {!isLoading && data && (
+              <>
+                <div className="flex flex-col flex-1">
+                  <div className="mb-[15px] font-[500] bg-white border px-[10px] py-[10px] rounded-[8px] flex gap-[30px] items-center justify-between">
+                    {/* <div className=" bg-black px-[15px] py-[10px] text-[14px] rounded-[8px] text-white">
+                  Кількість постів: {data.posts}
+                </div> */}
+                    <div>
+                      <button
+                        className="flex items-center gap-[10px] px-[10px] py-[10px] text-[14px] bg-black rounded-[6px] text-white"
+                        onClick={() => dispatch(setIsAddPost(true))}
+                      >
+                        <span>Додати пост</span>
+                        <FontAwesomeIcon className="w-[14px]" icon={faPlus} />
+                      </button>
+                    </div>
+                  </div>
+                  <table className="min-w-full divide-y divide-gray-200 bg-white rounded-[8px] overflow-hidden">
+                    <thead className="bg-black">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="flex items-center px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
+                        >
+                          ID
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
+                        >
+                          Дата
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
+                        >
+                          Фото
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase"
+                        >
+                          Заголовок
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-xs font-bold text-right text-gray-300 uppercase "
+                        >
+                          Переглядів
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-[60px] py-3 text-xs font-bold text-right text-gray-300 uppercase "
+                        ></th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {data.posts.map((post: Post) => {
+                        return (
+                          <PostTableRow
+                            key={post._id}
+                            data={post}
+                            refetch={refetch}
+                          />
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                  <Pagination
+                    page={data.currentPage}
+                    total={data.totalPages}
+                    setFilter={setFilter}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </Main>

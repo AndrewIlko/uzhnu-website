@@ -32,7 +32,7 @@ const Post = ({ data }: { data: Post }) => {
 
       localStorage.setItem("viewed-posts", JSON.stringify(viewedPosts));
       setCountOfViews((prev) => prev + 1);
-      await axios.post(URL + `/post/${id}/add-view`);
+      await axios.post(`/post/${id}/add-view`);
     }
   };
 
@@ -42,11 +42,13 @@ const Post = ({ data }: { data: Post }) => {
         <div className="h-[500px] lg:h-[225px] bg-white rounded-lg p-[16px] flex flex-col lg:flex-row gap-[30px]">
           <div
             className="lg:min-w-[330px] h-[100%] bg-neutral-200 rounded-md overflow-hidden bg-cover bg-center"
-            style={{ backgroundImage: `url("${image ? "" : defaultImg.src}")` }}
+            style={{
+              backgroundImage: `url("${image ? image : defaultImg.src}")`,
+            }}
           />
           <div className="w-fit flex flex-col flex-1 justify-between px-[5px] md:px-[30px] lg:px-0">
             <p className="font-[600] text-[18px] lg:text-[16px]">{title}</p>
-            <div className="flex justify-between items-center gap-[30px] lg:pb-[5px] mt-[60px] lg:mt-0">
+            <div className="flex justify-between items-center gap-[30px] lg:pb-[5px] mt-[60px] lg:mt-0 w-full">
               <div className="text-[14px] font-[500] flex gap-[10px] items-center">
                 <FontAwesomeIcon
                   icon={faEye}
