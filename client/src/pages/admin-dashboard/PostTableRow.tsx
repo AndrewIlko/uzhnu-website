@@ -8,10 +8,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import { ChangeEvent, memo, useState } from "react";
+import { ChangeEvent, memo, useEffect, useState } from "react";
 import defaultImg from "../../assets/images/other/default-news-image.png";
 import { useMutation } from "react-query";
 import axios from "axios";
+import { adminDashboardAction } from "@/redux/slices/adminDashboardSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { stat } from "fs";
 
 const EditModeRow = (props: {
   data: Post;
@@ -21,6 +25,8 @@ const EditModeRow = (props: {
 }) => {
   const { data, setIsEdit, setUpdatedPost, refetch } = props;
   const [post, setPost] = useState<Post>(data);
+  const { setPostToDelete } = adminDashboardAction;
+  const dispatch = useDispatch();
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files.length) {
@@ -47,18 +53,6 @@ const EditModeRow = (props: {
     const response = await axios.patch(`/post/${post._id}/update`, post);
     return response.data;
   };
-
-  const deletePost = async () => {
-    const response = await axios.delete(`/post/${post._id}`);
-    return response.data;
-  };
-
-  const { mutate: deleteMutate } = useMutation(deletePost, {
-    onSuccess: () => {
-      setIsEdit(false);
-      refetch();
-    },
-  });
 
   const { mutate: postMutate } = useMutation(updatePost, {
     onSuccess: () => {
@@ -129,7 +123,7 @@ const EditModeRow = (props: {
             <button
               className="px-[15px] bg-red-200 rounded-[6px] font-[500] h-[40px] w-[40px] flex items-center justify-center border-[2px] border-red-400"
               onClick={() => {
-                deleteMutate();
+                dispatch(setPostToDelete(post._id));
               }}
             >
               <FontAwesomeIcon

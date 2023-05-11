@@ -11,22 +11,24 @@ import { faArrowUp, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { adminDashboardAction } from "@/redux/slices/adminDashboardSlice";
 import { useDispatch } from "react-redux";
-import AddPostPopUp from "./AddPostPopUp";
 import { useQuery } from "react-query";
-import { PAGE_URL } from "@/data";
 import { useRouter } from "next/router";
 import { queryToUrl, urlToQuery } from "@/helpers";
 import Pagination from "@/components/Pagination/Pagination";
 import { TitleInput } from "@/components/News/NewsFilter";
+import AddPostForm from "@/components/AdminDashboard/AddPostForm";
+import PopUp from "@/components/Popup";
+import DeleteConfirm from "@/components/AdminDashboard/DeleteConfirm";
 
 const AdminDashboard = () => {
-  const { isAddPost } = useSelector((state: any) => state.adminDashboard);
-  const { setIsAddPost } = adminDashboardAction;
+  const { isAddPost, postToDelete } = useSelector(
+    (state: any) => state.adminDashboard
+  );
+  const { asPath, replace } = useRouter();
   const dispatch = useDispatch();
-
+  const { setIsAddPost } = adminDashboardAction;
   const isFirstRender = useRef(true);
   const limit = 10;
-  const { asPath, replace } = useRouter();
 
   const query = useMemo(() => {
     return urlToQuery(asPath);
@@ -51,7 +53,10 @@ const AdminDashboard = () => {
 
   const { data, isLoading, refetch } = useQuery(
     ["fetch-posts", filter],
-    fetchPosts
+    fetchPosts,
+    {
+      keepPreviousData: true,
+    }
   );
 
   useEffect(() => {
@@ -85,7 +90,7 @@ const AdminDashboard = () => {
       <Main>
         <div className="flex flex-col flex-1 py-[30px]">
           <div className="flex flex-col flex-1 px-[25px]">
-            {!isLoading && data && (
+            {data && (
               <>
                 <div className="flex flex-col flex-1">
                   <div className="mb-[15px] font-[500] bg-white border px-[10px] py-[10px] rounded-[8px] flex gap-[30px] items-center justify-between">
@@ -176,7 +181,16 @@ const AdminDashboard = () => {
           </div>
         </div>
       </Main>
-      {isAddPost && <AddPostPopUp refetch={refetch} />}
+      {isAddPost && (
+        <PopUp>
+          <AddPostForm refetch={refetch} />
+        </PopUp>
+      )}
+      {postToDelete && (
+        <PopUp>
+          <DeleteConfirm postId={postToDelete} refetch={refetch} />
+        </PopUp>
+      )}
     </>
   );
 };
