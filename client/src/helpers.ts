@@ -59,6 +59,7 @@ export const queryToUrl = (object: NewsFilter) => {
     (object.sortDate && object.sortDate == "asc") ||
     (object.sortDate && object.sortDate == "desc")
   ) {
+    result.push(`sortDate=${object.sortDate}`);
   }
   return result.join("&");
 };

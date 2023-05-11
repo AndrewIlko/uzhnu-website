@@ -34,7 +34,6 @@ const PaginationNumberBtn = ({
   children: number;
   clickHandler: Function;
 }) => {
-  console.log(isSelected);
   return (
     <>
       <button
@@ -237,6 +236,10 @@ const Pagination = ({
 
     return buttons;
   };
+
+  if (total <= 1) {
+    return <></>;
+  }
 
   return (
     <>

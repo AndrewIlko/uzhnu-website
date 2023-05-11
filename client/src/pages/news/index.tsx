@@ -20,7 +20,7 @@ import axios from "axios";
 const NewsPage = () => {
   const isFirstRender = useRef(true);
   const limit = 10;
-  const { asPath, push } = useRouter();
+  const { asPath, replace } = useRouter();
 
   const query = useMemo(() => {
     return urlToQuery(asPath);
@@ -53,12 +53,14 @@ const NewsPage = () => {
       isFirstRender.current = false;
       return;
     }
-    push(
-      `${PAGE_URL}/news${queryUrl.length != 0 ? `?${queryUrl}` : ""}`,
-      undefined,
-      { shallow: true }
-    );
+    replace(`/news${queryUrl.length != 0 ? `?${queryUrl}` : ""}`, undefined, {
+      shallow: true,
+    });
   }, [filter]);
+
+  useEffect(() => {
+    console.log("reload");
+  }, []);
 
   return (
     <>

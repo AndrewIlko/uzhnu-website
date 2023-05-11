@@ -44,7 +44,7 @@ const CategoriesFilter = ({
             <div
               className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[10px] py-[10px] border-[1px]  rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
                 filter.category && filter.category.includes(id)
-                  ? "border-teal-500 "
+                  ? "border-black "
                   : ""
               }`}
               onClick={() => handleClick(id)}
@@ -60,7 +60,7 @@ const CategoriesFilter = ({
   );
 };
 
-const TitleInput = ({
+export const TitleInput = ({
   setFilter,
 }: {
   filter: NewsFilter;
@@ -70,7 +70,7 @@ const TitleInput = ({
 
   return (
     <>
-      <div className="mt-[15px]">
+      <div>
         <form
           className="flex gap-[5px]"
           onSubmit={(e) => {
@@ -97,7 +97,7 @@ const TitleInput = ({
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
-            />{" "}
+            />
           </div>
           <button className="px-[25px] rounded-tr-[6px] rounded-br-[6px] font-[500] border rounded-[6px] bg-black text-white">
             <span className="text-[14px]">Пошук</span>
@@ -129,7 +129,9 @@ const NewsFilter = ({
             setFilter={setFilter}
           />
         )}
-        <TitleInput filter={filter} setFilter={setFilter} />
+        <div className="mt-[15px]">
+          <TitleInput filter={filter} setFilter={setFilter} />
+        </div>
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import {
   faBan,
   faFloppyDisk,
   faPenToSquare,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -47,7 +48,19 @@ const EditModeRow = (props: {
     return response.data;
   };
 
-  const { mutate } = useMutation(updatePost, {
+  const deletePost = async () => {
+    const response = await axios.delete(`/post/${post._id}`);
+    return response.data;
+  };
+
+  const { mutate: deleteMutate } = useMutation(deletePost, {
+    onSuccess: () => {
+      setIsEdit(false);
+      refetch();
+    },
+  });
+
+  const { mutate: postMutate } = useMutation(updatePost, {
     onSuccess: () => {
       refetch();
     },
@@ -114,11 +127,22 @@ const EditModeRow = (props: {
         <td className="text-center px-6 py-4">
           <div className="flex flex-col items-center gap-[10px]">
             <button
+              className="px-[15px] bg-red-200 rounded-[6px] font-[500] h-[40px] w-[40px] flex items-center justify-center border-[2px] border-red-400"
+              onClick={() => {
+                deleteMutate();
+              }}
+            >
+              <FontAwesomeIcon
+                className="text-red-600 scale-[2]"
+                icon={faTrash}
+              />
+            </button>
+            <button
               className="px-[15px] bg-green-200 rounded-[6px] font-[500] h-[40px] w-[40px] flex items-center justify-center border-[2px] border-green-400"
               onClick={() => {
                 setIsEdit(false);
                 setUpdatedPost(post);
-                mutate();
+                postMutate();
               }}
             >
               <FontAwesomeIcon

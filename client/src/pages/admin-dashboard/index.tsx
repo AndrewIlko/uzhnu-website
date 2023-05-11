@@ -7,7 +7,7 @@ import Head from "next/head";
 import { useEffect, useMemo, useRef, useState } from "react";
 import PostTableRow from "./PostTableRow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { adminDashboardAction } from "@/redux/slices/adminDashboardSlice";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,7 @@ import { PAGE_URL } from "@/data";
 import { useRouter } from "next/router";
 import { queryToUrl, urlToQuery } from "@/helpers";
 import Pagination from "@/components/Pagination/Pagination";
+import { TitleInput } from "@/components/News/NewsFilter";
 
 const AdminDashboard = () => {
   const { isAddPost } = useSelector((state: any) => state.adminDashboard);
@@ -25,7 +26,7 @@ const AdminDashboard = () => {
 
   const isFirstRender = useRef(true);
   const limit = 10;
-  const { asPath, push } = useRouter();
+  const { asPath, replace } = useRouter();
 
   const query = useMemo(() => {
     return urlToQuery(asPath);
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
   const [filter, setFilter] = useState<NewsFilter>({
     title: query.title ? query.title[0] : "",
     page: query.page ? Number(query.page[0]) : 1,
-    sortDate: query.sortData ? query.sortData : "asc",
+    sortDate: query.sortData ? query.sortData : "desc",
   });
 
   const queryUrl = useMemo(() => {
@@ -43,7 +44,7 @@ const AdminDashboard = () => {
 
   const fetchPosts = async () => {
     const data = await axios
-      .get(`/post?sortDate=desc&limit=${limit}&${queryToUrl(filter)}`)
+      .get(`/post?limit=${limit}&${queryToUrl(filter)}`)
       .then((res) => res.data);
     return data;
   };
@@ -58,14 +59,20 @@ const AdminDashboard = () => {
       isFirstRender.current = false;
       return;
     }
-    push(
-      `${PAGE_URL}/admin-dashboard${
-        queryUrl.length != 0 ? `?${queryUrl}` : ""
-      }`,
+    replace(
+      `/admin-dashboard${queryUrl.length != 0 ? `?${queryUrl}` : ""}`,
       undefined,
       { shallow: true }
     );
   }, [filter]);
+
+  const handleDateSort = () => {
+    setFilter((prev) => {
+      const copy = { ...prev };
+      copy.sortDate = copy.sortDate == "desc" ? "asc" : "desc";
+      return copy;
+    });
+  };
 
   return (
     <>
@@ -94,70 +101,82 @@ const AdminDashboard = () => {
                         <FontAwesomeIcon className="w-[14px]" icon={faPlus} />
                       </button>
                     </div>
+                    <TitleInput filter={filter} setFilter={setFilter} />
                   </div>
-                  <table className="min-w-full divide-y divide-gray-200 bg-white rounded-[8px] overflow-hidden">
-                    <thead className="bg-black">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="flex items-center px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
-                        >
-                          ID
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
-                        >
-                          Дата
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
-                        >
-                          Фото
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase"
-                        >
-                          Заголовок
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-xs font-bold text-right text-gray-300 uppercase "
-                        >
-                          Переглядів
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-[60px] py-3 text-xs font-bold text-right text-gray-300 uppercase "
-                        ></th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {data.posts.map((post: Post) => {
-                        return (
-                          <PostTableRow
-                            key={post._id}
-                            data={post}
-                            refetch={refetch}
-                          />
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                  <Pagination
-                    page={data.currentPage}
-                    total={data.totalPages}
-                    setFilter={setFilter}
-                  />
+                  <div className="flex flex-col flex-1 justify-between gap-[15px]">
+                    <table className="min-w-full divide-y divide-gray-200 bg-white rounded-[8px] overflow-hidden">
+                      <thead className="bg-black select-none">
+                        <tr>
+                          <th
+                            scope="col"
+                            className="flex items-center px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
+                          >
+                            ID
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase cursor-pointer"
+                            onClick={() => handleDateSort()}
+                          >
+                            <div className="flex gap-[10px]">
+                              <span>Дата</span>
+                              <FontAwesomeIcon
+                                className={`w-[8px] ${
+                                  filter.sortDate == "desc" ? "" : "rotate-180"
+                                }`}
+                                icon={faArrowUp}
+                              />
+                            </div>
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase "
+                          >
+                            Фото
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-xs font-bold text-left text-gray-300 uppercase"
+                          >
+                            Заголовок
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-3 text-xs font-bold text-right text-gray-300 uppercase "
+                          >
+                            Переглядів
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-[60px] py-3 text-xs font-bold text-right text-gray-300 uppercase "
+                          ></th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200">
+                        {data.posts.map((post: Post) => {
+                          return (
+                            <PostTableRow
+                              key={post._id}
+                              data={post}
+                              refetch={refetch}
+                            />
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                    <Pagination
+                      page={data.currentPage}
+                      total={data.totalPages}
+                      setFilter={setFilter}
+                    />
+                  </div>
                 </div>
               </>
             )}
           </div>
         </div>
       </Main>
-      {isAddPost && <AddPostPopUp />}
+      {isAddPost && <AddPostPopUp refetch={refetch} />}
     </>
   );
 };

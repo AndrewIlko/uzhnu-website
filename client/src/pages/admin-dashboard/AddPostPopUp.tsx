@@ -4,11 +4,13 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import uuid from "react-uuid";
 
-const AddPostPopUp = () => {
+const AddPostPopUp = (props: { refetch: Function }) => {
+  const { refetch } = props;
   const initialState = useMemo(() => {
     return {
       title: "",
@@ -27,18 +29,22 @@ const AddPostPopUp = () => {
 
   const postData = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:8000/create-post",
-        form
-      );
+      await axios.post("/post/create", form);
     } catch (e) {
       console.log(e);
     }
   };
 
+  const { mutate } = useMutation(postData, {
+    onSuccess: () => {
+      dispatch(setIsAddPost(false));
+      refetch();
+    },
+  });
+
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    postData();
+    mutate();
   };
 
   return (
