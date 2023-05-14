@@ -17,7 +17,7 @@ import { queryToUrl, urlToQuery } from "@/helpers";
 import Pagination from "@/components/Pagination/Pagination";
 import { TitleInput } from "@/components/News/NewsFilter";
 import AddPostForm from "@/components/AdminDashboard/AddPostForm";
-import PopUp from "@/components/Popup";
+import PopUp from "@/components/PopUp";
 import DeleteConfirm from "@/components/AdminDashboard/DeleteConfirm";
 
 const AdminDashboard = () => {

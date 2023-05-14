@@ -15,7 +15,7 @@ const DeanCard = (props: DeanCardType) => {
     description,
   } = props;
   return (
-    <div className="bg-white rounded-[8px] p-[15px] h-fit">
+    <div className="bg-white rounded-[8px] p-[15px] h-fit mx-auto">
       <Image
         src={url}
         className={`w-full rounded-[6px] max-w-[300px] mx-auto ${className}`}

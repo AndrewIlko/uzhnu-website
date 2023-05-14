@@ -11,6 +11,7 @@ interface initialStateType {
         error: string | null;
       }
     | any;
+  isSideMenu: boolean;
 }
 
 const initialState: initialStateType = {
@@ -19,6 +20,7 @@ const initialState: initialStateType = {
     loading: false,
     error: null,
   },
+  isSideMenu: false,
 };
 
 export const fetchNewsCategories = createAsyncThunk(
@@ -37,6 +39,9 @@ const globalSlice = createSlice({
   reducers: {
     setNewsCategories: (state, action) => {
       state["news-categories"] = action.payload;
+    },
+    setIsSideMenu: (state, action) => {
+      state.isSideMenu = action.payload;
     },
   },
   extraReducers: (builder) => {

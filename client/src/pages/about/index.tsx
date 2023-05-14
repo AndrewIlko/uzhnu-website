@@ -11,10 +11,11 @@ import image4 from "../../assets/images/about/image4.jpg";
 import povhanImage from "../../assets/images/people/povhan.jpg";
 import DepartmentsList from "@/components/DepartmentsList";
 import DeanCard from "@/components/DeanCard";
+import AboutInfoWrapper from "@/components/About/AboutInfoWrapper";
 
 const AboutBlock = () => {
   return (
-    <div className="flex flex-col max-w-[750px] rounded-[8px] bg-white pt-[24px] px-[30px] pb-[30px]">
+    <div className="flex flex-col max-w-[750px] rounded-[8px]">
       <div className="px-[10px] text-[32px] font-[600]">
         <h1 className="text-center">ФАКУЛЬТЕТ ІНФОРМАЦІЙНИХ ТЕХНОЛОГІЙ</h1>
       </div>
@@ -312,9 +313,11 @@ const About = () => {
       <Main>
         <Container>
           <div className="flex flex-col flex-1 py-[30px]">
-            <div className="flex gap-[30px] px-[25px] flex-1">
-              <AboutBlock />
-              <div className="flex flex-col h-fit sticky top-[30px] min-w-[350px]">
+            <div className="flex flex-col-reverse lg:flex-row gap-[15px] px-[25px] flex-1">
+              <AboutInfoWrapper>
+                <AboutBlock />
+              </AboutInfoWrapper>
+              <div className="flex flex-col h-fit lg:sticky lg:top-[30px]">
                 <DeanCard
                   image={{ url: povhanImage }}
                   title="Декан факультету:"

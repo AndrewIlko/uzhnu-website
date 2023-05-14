@@ -2,17 +2,24 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const useWindowWidth = () => {
-  const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState<number | null>(null);
 
   useEffect(() => {
-    const getWindowWidth = () => {
+    const updateWindowWidth = () => {
       setWidth(window.innerWidth);
     };
 
-    window.addEventListener("resize", getWindowWidth);
+    // Update window width on component mount
+    updateWindowWidth();
 
-    return () => window.removeEventListener("resize", getWindowWidth);
-  });
+    // Add event listener for window resize
+    window.addEventListener("resize", updateWindowWidth);
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", updateWindowWidth);
+    };
+  }, []);
 
   return width;
 };

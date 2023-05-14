@@ -40,6 +40,7 @@ const CategoriesFilter = ({
       <div className="w-full flex gap-x-[5px] gap-y-[5px] flex-wrap">
         {newsCategories.data.map((category: Category) => {
           const { _id: id, name, posts } = category;
+
           return (
             <div
               className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[10px] py-[10px] border-[1px]  rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${

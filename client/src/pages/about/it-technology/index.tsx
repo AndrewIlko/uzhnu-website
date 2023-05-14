@@ -14,11 +14,12 @@ import image6 from "../../../assets/images/it-technology/image6.jpg";
 import image7 from "../../../assets/images/it-technology/image7.jpg";
 import Image from "next/image";
 import Link from "next/link";
+import AboutInfoWrapper from "@/components/About/AboutInfoWrapper";
 
 const AboutBlock = () => {
   return (
     <>
-      <div className="flex flex-col max-w-[750px] rounded-[8px] bg-white pt-[24px] px-[30px] pb-[30px]">
+      <div className="flex flex-col max-w-[750px] rounded-[8px] bg-white">
         <div className="px-[10px] text-[32px] font-[600]">
           <h1 className="text-center">
             КАФЕДРА ІНФОРМАЦІЙНИХ УПРАВЛЯЮЧИХ СИСТЕМ ТА ТЕХНОЛОГІЙ
@@ -156,9 +157,11 @@ const ItTechnology = () => {
       <Main>
         <Container>
           <div className="flex flex-col flex-1 py-[30px]">
-            <div className="flex gap-[30px] px-[25px] flex-1">
-              <AboutBlock />
-              <div className="flex flex-col h-fit sticky top-[30px] min-w-[350px]">
+            <div className="flex flex-col-reverse lg:flex-row gap-[15px] px-[25px] flex-1">
+              <AboutInfoWrapper>
+                <AboutBlock />
+              </AboutInfoWrapper>
+              <div className="flex flex-col h-fit lg:sticky lg:top-[30px]">
                 <DeanCard
                   image={{ url: mizaImage, className: "max-w-[243px]" }}
                   title="Завідувач кафедри:"

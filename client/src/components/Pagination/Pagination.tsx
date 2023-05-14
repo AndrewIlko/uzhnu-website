@@ -245,7 +245,7 @@ const Pagination = ({
     <>
       <div className="flex flex-col justify-center items-center gap-[5px] w-fit mx-auto">
         <div className="flex justify-center items-center gap-[5px] text-[14px] w-fit">
-          {windowWidth > 620 && page != 1 && (
+          {windowWidth && windowWidth > 620 && page != 1 && (
             <PaginationBtn
               clickHandler={() => {
                 setFilter((prev: NewsFilter) => {
@@ -262,7 +262,7 @@ const Pagination = ({
             </PaginationBtn>
           )}
           {genPaginationBtns()}
-          {windowWidth > 620 && page != total && (
+          {windowWidth && windowWidth > 620 && page != total && (
             <PaginationBtn
               clickHandler={() => {
                 setFilter((prev: NewsFilter) => {
@@ -282,7 +282,7 @@ const Pagination = ({
             </PaginationBtn>
           )}
         </div>
-        {windowWidth <= 620 && (
+        {windowWidth && windowWidth <= 620 && (
           <div className="grid w-full grid-cols-2 gap-[10px]">
             {page == 1 && <div />}
             {page != 1 && (
