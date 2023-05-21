@@ -3,9 +3,9 @@ import { useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { URL } from "@/data";
 import { useSelector } from "react-redux";
 import defaultImg from "../../assets/images/other/default-news-image.png";
+import { categoryColors } from "@/data";
 
 const Post = ({ data }: { data: Post }) => {
   const {
@@ -36,6 +36,14 @@ const Post = ({ data }: { data: Post }) => {
     }
   };
 
+  const category = useMemo(() => {
+    if (categories.data.length != 0) {
+      return categories.data.find(
+        (category: any) => category["_id"] == categoryID
+      );
+    }
+  }, [categories.data]);
+
   return (
     <>
       <a href={postLink} target="_blank" onClick={() => makeViewed()}>
@@ -58,12 +66,16 @@ const Post = ({ data }: { data: Post }) => {
                   {countOfViews}
                 </span>
               </div>
-              <div className="text-right lg:mr-[20px] text-[16px] lg:text-[14px] font-[600]">
-                {categories.data.length != 0 &&
-                  categories.data.find(
-                    (category: any) => category["_id"] == categoryID
-                  ).name}
-              </div>
+              {category && (
+                <div
+                  className="text-right lg:mr-[20px] text-[16px] text-white lg:text-[14px] font-[600] px-[15px] py-[3px] rounded-[8px]"
+                  style={{
+                    backgroundColor: categoryColors[category.name],
+                  }}
+                >
+                  {category.name}
+                </div>
+              )}
               <div className="text-right lg:mr-[20px] text-[16px] lg:text-[14px] font-[600] text-neutral-600">
                 {new Date(date).toLocaleDateString("uk-UA")}
               </div>

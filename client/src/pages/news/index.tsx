@@ -16,6 +16,7 @@ import { genArrWithElement, queryToUrl, urlToQuery } from "@/helpers";
 import SkeletonPost from "@/components/Posts/SkeletonPost";
 import { useQuery } from "react-query";
 import axios from "axios";
+import NoContentError from "@/components/Errors/NoContentError";
 
 const NewsPage = () => {
   const isFirstRender = useRef(true);
@@ -84,7 +85,6 @@ const NewsPage = () => {
                         return <Post key={uuid()} data={post} />;
                       })}
                     </div>
-
                     <Pagination
                       page={data.currentPage}
                       total={data.totalPages}
@@ -92,6 +92,7 @@ const NewsPage = () => {
                     />
                   </>
                 )}
+                {isError && <NoContentError />}
               </div>
             </div>
           </div>

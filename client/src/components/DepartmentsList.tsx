@@ -15,9 +15,12 @@ const DepartmentsList = ({ className }: { className?: string }) => {
       link: "/about/fiz-math",
     },
   ];
+
   return (
     <>
-      <div className={`flex flex-col gap-[10px] ${className}`}>
+      <div
+        className={`flex flex-col gap-[10px] max-w-[500px] w-full mx-auto ${className}`}
+      >
         {departments.map((department) => {
           const { title, link } = department;
           return (

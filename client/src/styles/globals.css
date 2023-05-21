@@ -8,6 +8,29 @@
   box-sizing: border-box;
 }
 
+* {
+  ::-webkit-scrollbar {
+    height: 6px;
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(23 23 23);
+    border-radius: 6px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(23 23 23);
+  }
+}
+
 html,
 body,
 #__next {
@@ -24,8 +47,8 @@ body {
   line-height: 1.5;
   color: #232323;
   transition-property: background-color;
-  transition-duration: 200ms;
   scroll-behavior: smooth;
+  transition-duration: 200ms;
 }
 
 .footer-grid {

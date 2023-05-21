@@ -13,6 +13,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import animation from "../styles/modules/animations.module.css";
+import NoContentError from "@/components/Errors/NoContentError";
 
 type LatestNewsPropsType = {
   posts: PostType[] | null;
@@ -26,16 +27,7 @@ const LatestNews = (props: LatestNewsPropsType) => {
         <div className="px-[10px] text-[32px] font-[600]">
           <h1>Останні новини</h1>
         </div>
-        {!posts && (
-          <div className="w-full flex justify-center mt-[80px] flex-1 text-center text-[18px]">
-            <div className="flex flex-col gap-[20px]">
-              <span className="text-[56px]">😿</span>
-              <span className="font-[500]">
-                Упсссс... схоже тут нічого нема
-              </span>
-            </div>
-          </div>
-        )}
+        {!posts && <NoContentError />}
         {posts && (
           <div className="flex flex-col gap-[15px]">
             {posts.map((post: PostType) => {

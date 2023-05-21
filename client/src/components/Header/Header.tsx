@@ -6,9 +6,12 @@ import { navItems } from "@/static-data";
 import NavbarItem from "./Navbar/NavbarItem";
 import uuid from "react-uuid";
 import BurgerMenu from "./BurgerMenu";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const width = useWindowWidth();
+  const { pathname } = useRouter();
+
   return (
     <>
       <header className="w-full h-[60px] bg-white">
@@ -21,7 +24,15 @@ const Header = () => {
                   {navItems.map((item) => {
                     const { link, title } = item;
                     return (
-                      <NavbarItem key={uuid()} link={link}>
+                      <NavbarItem
+                        key={uuid()}
+                        link={link}
+                        isSelected={
+                          link == "/"
+                            ? pathname == link
+                            : pathname.includes(link)
+                        }
+                      >
                         {title}
                       </NavbarItem>
                     );

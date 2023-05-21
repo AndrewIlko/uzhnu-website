@@ -1,11 +1,10 @@
-import Container from "@/components/Container";
 import Main from "@/components/Main/Main";
 import { NewsFilter, Post } from "@/ts/types/app_types";
 import axios from "axios";
 
 import Head from "next/head";
 import { useEffect, useMemo, useRef, useState } from "react";
-import PostTableRow from "./PostTableRow";
+import PostTableRow from "../../components/AdminDashboard/PostTableRow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
@@ -19,6 +18,8 @@ import { TitleInput } from "@/components/News/NewsFilter";
 import AddPostForm from "@/components/AdminDashboard/AddPostForm";
 import PopUp from "@/components/PopUp";
 import DeleteConfirm from "@/components/AdminDashboard/DeleteConfirm";
+import SimpleLoader from "@/components/Loader/SimpleLoader";
+import NoContentError from "@/components/Errors/NoContentError";
 
 const AdminDashboard = () => {
   const { isAddPost, postToDelete } = useSelector(
@@ -51,11 +52,14 @@ const AdminDashboard = () => {
     return data;
   };
 
-  const { data, isLoading, refetch } = useQuery(
+  const { data, refetch, isLoading, isError } = useQuery(
     ["fetch-posts", filter],
     fetchPosts,
     {
       keepPreviousData: true,
+      onSuccess: () => {
+        console.log("Fetched");
+      },
     }
   );
 
@@ -90,13 +94,20 @@ const AdminDashboard = () => {
       <Main>
         <div className="flex flex-col flex-1 py-[30px]">
           <div className="flex flex-col flex-1 px-[25px]">
+            {isLoading && (
+              <>
+                <div className="flex flex-1 justify-center items-center">
+                  <SimpleLoader
+                    className={"text-slate-300 fill-blue-600 w-[50px] h-[50px]"}
+                  />
+                </div>
+              </>
+            )}
+            {isError && <NoContentError />}
             {data && (
               <>
                 <div className="flex flex-col flex-1">
                   <div className="mb-[15px] font-[500] bg-white border px-[10px] py-[10px] rounded-[8px] flex gap-[30px] items-center justify-between">
-                    {/* <div className=" bg-black px-[15px] py-[10px] text-[14px] rounded-[8px] text-white">
-                  Кількість постів: {data.posts}
-                </div> */}
                     <div>
                       <button
                         className="flex items-center gap-[10px] px-[10px] py-[10px] text-[14px] bg-black rounded-[6px] text-white"

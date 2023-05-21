@@ -32,9 +32,11 @@ const AboutBlock = () => {
             З 1-го вересня 2018 року кафедра стала випусковою за спеціальністю
             126 "Інформаційні системи та технології".
           </p>
-          <div className="flex flex-col mt-[15px] ml-[50px]">
-            <div>За час існування кафедри її завідувачами були:</div>
-            <ul className="flex flex-col gap-[10px] list-disc">
+          <div className="flex flex-col mt-[15px]">
+            <div className="font-[500]">
+              За час існування кафедри її завідувачами були:
+            </div>
+            <ul className="flex flex-col gap-[10px] list-disc ml-[40px] mt-[10px]">
               <li>
                 Буледза Андрій Васильович – кандидат фізико-математичних наук,
                 доцент, професор кафедри (1.09.1996 р – 31.12.1998 р.);

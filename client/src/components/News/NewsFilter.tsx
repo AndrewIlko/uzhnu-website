@@ -6,6 +6,7 @@ import { updateObj, urlToQuery } from "@/helpers";
 import { PAGE_URL } from "@/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { categoryColors } from "@/data";
 
 const CategoriesFilter = ({
   newsCategories,
@@ -41,13 +42,18 @@ const CategoriesFilter = ({
         {newsCategories.data.map((category: Category) => {
           const { _id: id, name, posts } = category;
 
+          const className = `flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[10px] bg-white py-[10px] border-[1px] rounded-[8px] select-none cursor-pointer transition-border duration-100`;
           return (
             <div
-              className={`flex whitespace-normal text-[14px] font-[500] gap-[15px] px-[10px] py-[10px] border-[1px]  rounded-[8px] bg-white select-none cursor-pointer transition-border duration-200 ${
+              className={className}
+              style={
                 filter.category && filter.category.includes(id)
-                  ? "border-black "
-                  : ""
-              }`}
+                  ? {
+                      backgroundColor: `${categoryColors[name]}`,
+                      color: "#fff",
+                    }
+                  : {}
+              }
               onClick={() => handleClick(id)}
               key={id}
             >

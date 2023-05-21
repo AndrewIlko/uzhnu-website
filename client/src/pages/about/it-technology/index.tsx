@@ -40,7 +40,7 @@ const AboutBlock = () => {
             технологій здобувають кваліфікацію «Фахівець з розробки комп’ютерних
             програм».
           </p>
-          <div className="mt-[15px]">
+          <div className="my-[15px]">
             <Image src={image1} alt="image1" className="w-full rounded-[8px]" />
           </div>
           <p className="indent-10">
@@ -60,7 +60,7 @@ const AboutBlock = () => {
             інформатиків, а також є авторами задач на престижних всеукраїнських
             та міжнародних змаганнях.
           </p>
-          <div className="mt-[15px] flex flex-col gap-[10px]">
+          <div className="my-[15px] flex flex-col gap-[10px]">
             <Image src={image2} alt="image2" className="w-full rounded-[8px]" />
             <Image src={image3} alt="image3" className="w-full rounded-[8px]" />
             <Image src={image4} alt="image4" className="w-full rounded-[8px]" />
@@ -83,7 +83,7 @@ const AboutBlock = () => {
             місяці в Ужгороді і на якій збираються кращі студенти-програмісти
             України та ближнього зарубіжжя .
           </p>
-          <div className="mt-[15px]">
+          <div className="my-[15px]">
             <Image src={image5} alt="image5" className="w-full rounded-[8px]" />
           </div>
           <p className="indent-10">
@@ -102,12 +102,12 @@ const AboutBlock = () => {
               власний 3D принтер.
             </a>
           </p>
-          <div className="flex flex-col gap-[10px] ml-[40px] mt-[15px]">
-            <div>
+          <div className="flex flex-col gap-[10px] mt-[15px]">
+            <div className="font-[500]">
               Студенти, які навчаються за спеціальністю 122 «Комп’ютерні науки»
               отримують ґрунтовні знання з:
             </div>
-            <ul className="flex flex-col gap-[10px]">
+            <ul className="flex flex-col gap-[10px] ml-[40px] ">
               <li>-фундаментального програмування;</li>
               <li>
                 -веб-технологій, веб-дизайну, програмування та підтримка
@@ -119,7 +119,7 @@ const AboutBlock = () => {
               <li>-комп’ютерних мереж та захисту інформації.</li>
             </ul>
           </div>
-          <div className="mt-[15px]">
+          <div className="my-[15px]">
             <Image src={image6} alt="image6" className="w-full rounded-[8px]" />
           </div>
           <p className="indent-10">

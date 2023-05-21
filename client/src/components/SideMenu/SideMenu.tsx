@@ -6,23 +6,34 @@ import { globalAction } from "@/redux/slices/globalSlice";
 import { useDispatch } from "react-redux";
 import { Fragment } from "react";
 import uuid from "react-uuid";
+import { useRouter } from "next/router";
+import SideMenuItem from "./SideMenuItem";
 
 const SideBarNav = () => {
   const { setIsSideMenu } = globalAction;
   const dispatch = useDispatch();
+  const { pathname } = useRouter();
+
+  const handleClick = () => {
+    dispatch(setIsSideMenu(false));
+  };
+
   return (
     <>
       <ul className="flex flex-col gap-[10px]">
         {navItems.map((navItem) => {
           const { link, title } = navItem;
           return (
-            <Fragment key={uuid()}>
-              <Link href={link} onClick={() => dispatch(setIsSideMenu(false))}>
-                <li className="font-[500] px-[10px] py-[10px] hover:bg-neutral-100 rounded-[6px]">
-                  {title}
-                </li>
-              </Link>
-            </Fragment>
+            <SideMenuItem
+              key={uuid()}
+              link={link}
+              onClick={() => handleClick()}
+              isSelected={
+                link == "/" ? pathname == link : pathname.includes(link)
+              }
+            >
+              {title}
+            </SideMenuItem>
           );
         })}
       </ul>
@@ -52,9 +63,9 @@ const SideMenu = () => {
         onClick={(e) => handleClick(e)}
       >
         <div
-          className="w-[350px] h-full bg-white shadow px-[20px] py-[10px]"
+          className="w-[300px] h-full bg-white shadow px-[20px] py-[10px]"
           style={{
-            transform: `translateX(${isSideMenu ? "0" : "360"}px)`,
+            transform: `translateX(${isSideMenu ? "0" : "310"}px)`,
             transition: "transform 0.3s ease-in-out",
           }}
         >
@@ -62,7 +73,7 @@ const SideMenu = () => {
             <BurgerMenu />
             <SideBarNav />
           </div>
-        </div>{" "}
+        </div>
       </div>
     </>
   );

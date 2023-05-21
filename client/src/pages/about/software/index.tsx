@@ -31,9 +31,11 @@ const AboutBlock = () => {
             технологій з креативної та сучасної спеціальності 121 «Інженерія
             програмного забезпечення».
           </p>
-          <div className="flex flex-col mt-[15px] ml-[50px]">
-            <div>За час існування кафедри її завідувачами були:</div>
-            <ul className="flex flex-col gap-[10px] list-disc">
+          <div className="flex flex-col mt-[15px]">
+            <div className="font-[500]">
+              За час існування кафедри її завідувачами були:
+            </div>
+            <ul className="flex flex-col gap-[10px] list-disc ml-[40px] mt-[15px]">
               <li>
                 Буледза Андрій Васильович — кандидат фізико-математичних наук,
                 доцент, професор кафедри (01.09.1996 р. – 31.12.1998 р.);

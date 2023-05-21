@@ -1,4 +1,6 @@
+import uuid from "react-uuid";
 import { NewsFilter } from "./ts/types/app_types";
+import React, { Fragment } from "react";
 
 export const updateObj = (obj: object, key: string, value: any) => {
   const copy: any = { ...obj };
@@ -34,10 +36,10 @@ export const convertFileToBase64 = (file: Blob) => {
   });
 };
 
-export const genArrWithElement = (count: number, element: any) => {
-  let arr = [];
+export const genArrWithElement = (count: number, element: React.ReactNode) => {
+  let arr: React.ReactNode[] = [];
   for (let i = 1; i <= count; i++) {
-    arr.push(element);
+    arr.push(React.cloneElement(element, { key: uuid() }));
   }
   return arr;
 };
