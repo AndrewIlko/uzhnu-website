@@ -1,5 +1,3 @@
-import React from "react";
-
 const PopUp = (props: { children: any }) => {
   const { children } = props;
   return (

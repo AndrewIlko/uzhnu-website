@@ -1,11 +1,12 @@
 import { adminDashboardAction } from "@/redux/slices/adminDashboardSlice";
 import axios from "axios";
+import { type } from "os";
 import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 
 const DeleteConfirm = (props: { refetch: Function; postId: string }) => {
   const { refetch, postId } = props;
-  const { setPostToDelete } = adminDashboardAction;
+  const { setPostToDelete, setAlert } = adminDashboardAction;
   const dispatch = useDispatch();
 
   const deletePost = async () => {
@@ -16,6 +17,13 @@ const DeleteConfirm = (props: { refetch: Function; postId: string }) => {
   const { mutate: deleteMutate } = useMutation(deletePost, {
     onSuccess: () => {
       refetch();
+      dispatch(
+        setAlert({
+          status: true,
+          type: "success",
+          text: "Пост було успішно видалено",
+        })
+      );
       closeWindow();
     },
   });
@@ -32,7 +40,7 @@ const DeleteConfirm = (props: { refetch: Function; postId: string }) => {
         </div>
         <div className="flex justify-center gap-[30px] mt-[40px]">
           <button
-            className="px-[15px] py-[5px] rounded-[6px] w-[75px] border-[2px] border-green-400 bg-green-200 font-[500]"
+            className="px-[15px] py-[5px] rounded-[6px] w-[75px] bg-green-500 text-white font-[500]"
             onClick={() => {
               deleteMutate();
             }}
@@ -40,7 +48,7 @@ const DeleteConfirm = (props: { refetch: Function; postId: string }) => {
             Так
           </button>
           <button
-            className="px-[15px] py-[5px] rounded-[6px] w-[75px] border-[2px] border-red-400 bg-red-200 font-[500]"
+            className="px-[15px] py-[5px] rounded-[6px] w-[75px] bg-red-500 text-white font-[500]"
             onClick={() => closeWindow()}
           >
             Ні

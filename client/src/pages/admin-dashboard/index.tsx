@@ -20,6 +20,7 @@ import PopUp from "@/components/PopUp";
 import DeleteConfirm from "@/components/AdminDashboard/DeleteConfirm";
 import SimpleLoader from "@/components/Loader/SimpleLoader";
 import NoContentError from "@/components/Errors/NoContentError";
+import Alert from "@/components/Alerts/AlertAdminDashboard";
 
 const AdminDashboard = () => {
   const { isAddPost, postToDelete } = useSelector(
@@ -192,6 +193,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </Main>
+      <Alert />
       {isAddPost && (
         <PopUp>
           <AddPostForm refetch={refetch} />

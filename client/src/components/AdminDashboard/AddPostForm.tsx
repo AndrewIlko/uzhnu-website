@@ -8,6 +8,7 @@ import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import uuid from "react-uuid";
+import SimpleLoader from "../Loader/SimpleLoader";
 
 const AddPostForm = (props: { refetch: Function }) => {
   const { refetch } = props;
@@ -20,7 +21,7 @@ const AddPostForm = (props: { refetch: Function }) => {
       date: "",
     };
   }, []);
-  const { setIsAddPost } = adminDashboardAction;
+  const { setIsAddPost, setAlert } = adminDashboardAction;
   const newsCategories = useSelector(
     (state: any) => state.global["news-categories"].data
   );
@@ -35,9 +36,16 @@ const AddPostForm = (props: { refetch: Function }) => {
     }
   };
 
-  const { mutate } = useMutation(postData, {
+  const { mutate, isLoading } = useMutation(postData, {
     onSuccess: () => {
       dispatch(setIsAddPost(false));
+      dispatch(
+        setAlert({
+          status: true,
+          type: "success",
+          text: "Пост було успішно додано",
+        })
+      );
       refetch();
     },
   });
@@ -124,7 +132,15 @@ const AddPostForm = (props: { refetch: Function }) => {
               })}
             </select>
           </div>
-          <button className="bg-black py-[10px] mt-[30px] text-white font-[500] rounded-[6px]">
+          <button
+            disabled={isLoading}
+            className="bg-black py-[10px] mt-[30px] text-white font-[500] rounded-[6px] flex justify-center items-center"
+          >
+            {isLoading && (
+              <>
+                <SimpleLoader className="w-[18px] h-[18px] fill-slate-600" />
+              </>
+            )}
             Додати
           </button>
         </form>
