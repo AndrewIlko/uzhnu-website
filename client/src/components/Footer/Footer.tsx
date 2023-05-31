@@ -5,7 +5,7 @@ import FooterBlockTitle from "./FooterBlockTitle";
 const Footer = () => {
   return (
     <>
-      <footer className=" bg-neutral-900 w-full">
+      <footer className=" bg-black w-full">
         <Container>
           <div className="w-full h-full px-[25px] lg:px-[48px] py-[32px] flex flex-col">
             <div className="grid footer-grid gap-[15px]">

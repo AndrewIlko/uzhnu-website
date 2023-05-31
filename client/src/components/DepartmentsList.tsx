@@ -2,18 +2,18 @@ import Link from "next/link";
 
 const DepartmentsList = ({ className }: { className?: string }) => {
   const departments = [
-    {
-      title: "Кафедра програмного забезпечення систем",
-      link: "/about/software",
-    },
+    // {
+    //   title: "Кафедра програмного забезпечення систем",
+    //   link: "/about/software",
+    // },
     {
       title: "Кафедра інформаційних управляючих систем та технологій",
       link: "/about/it-technology",
     },
-    {
-      title: "Кафедра інформатики та фізико-математичних дисциплін",
-      link: "/about/fiz-math",
-    },
+    // {
+    //   title: "Кафедра інформатики та фізико-математичних дисциплін",
+    //   link: "/about/fiz-math",
+    // },
   ];
 
   return (

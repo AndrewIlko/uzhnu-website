@@ -69,6 +69,7 @@ const CategoriesFilter = ({
 
 export const TitleInput = ({
   setFilter,
+  filter,
 }: {
   filter: NewsFilter;
   setFilter: Function;
@@ -101,6 +102,9 @@ export const TitleInput = ({
               )}]`}
               placeholder="Введіть назву поста"
               value={title}
+              onBlur={() => {
+                setTitle(filter.title!);
+              }}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}

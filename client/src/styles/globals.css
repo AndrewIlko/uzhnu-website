@@ -8,27 +8,25 @@
   box-sizing: border-box;
 }
 
-* {
-  ::-webkit-scrollbar {
-    height: 6px;
-    width: 8px;
-  }
+::-webkit-scrollbar {
+  height: 6px;
+  width: 8px;
+}
 
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
 
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgb(23 23 23);
-    border-radius: 6px;
-  }
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(23 23 23);
+  border-radius: 6px;
+}
 
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(23 23 23);
-  }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(23 23 23);
 }
 
 html,
