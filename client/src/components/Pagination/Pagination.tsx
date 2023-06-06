@@ -3,6 +3,7 @@ import { updateObj } from "@/helpers";
 import { NewsFilter } from "@/ts/types/app_types";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import uuid from "react-uuid";
 
 const PaginationBtn = ({
   className,
@@ -77,6 +78,7 @@ const Pagination = ({
       for (let i = 1; i <= total; i++) {
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={page == i}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -95,6 +97,7 @@ const Pagination = ({
         for (let i = 1; i <= 4; i++) {
           buttons.push(
             <PaginationNumberBtn
+              key={uuid()}
               isSelected={page == i}
               clickHandler={() => {
                 setFilter((prev: NewsFilter) => {
@@ -108,9 +111,10 @@ const Pagination = ({
             </PaginationNumberBtn>
           );
         }
-        buttons.push(<ThreeDots />);
+        buttons.push(<ThreeDots key={uuid()} />);
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={false}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -128,6 +132,7 @@ const Pagination = ({
       if (page >= 4 && page <= total - 3) {
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={false}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -140,9 +145,10 @@ const Pagination = ({
             {1}
           </PaginationNumberBtn>
         );
-        buttons.push(<ThreeDots />);
+        buttons.push(<ThreeDots key={uuid()} />);
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={false}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -157,6 +163,7 @@ const Pagination = ({
         );
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={true}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -172,6 +179,7 @@ const Pagination = ({
 
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={false}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -184,9 +192,10 @@ const Pagination = ({
             {page + 1}
           </PaginationNumberBtn>
         );
-        buttons.push(<ThreeDots />);
+        buttons.push(<ThreeDots key={uuid()} />);
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={false}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -202,6 +211,7 @@ const Pagination = ({
       } else if (total - 3 <= page) {
         buttons.push(
           <PaginationNumberBtn
+            key={uuid()}
             isSelected={false}
             clickHandler={() => {
               setFilter((prev: NewsFilter) => {
@@ -218,6 +228,7 @@ const Pagination = ({
         for (let i = total - 3; i <= total; i++) {
           buttons.push(
             <PaginationNumberBtn
+              key={uuid()}
               isSelected={page == i}
               clickHandler={() => {
                 setFilter((prev: NewsFilter) => {

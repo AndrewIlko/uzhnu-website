@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import { Category, NewsCategories, NewsFilter } from "@/ts/types/app_types";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { updateObj, urlToQuery } from "@/helpers";
 import { PAGE_URL } from "@/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { categoryColors } from "@/data";
+import useDetectLeave from "@/custom-hooks/useDetectLeave";
 
 const CategoriesFilter = ({
   newsCategories,
@@ -75,10 +76,14 @@ export const TitleInput = ({
   setFilter: Function;
 }) => {
   const [title, setTitle] = useState("");
+  const titleInputWrapper = useRef<HTMLDivElement | null>(null);
+  useDetectLeave(titleInputWrapper, () => {
+    setTitle(filter.title!);
+  });
 
   return (
     <>
-      <div>
+      <div ref={titleInputWrapper}>
         <form
           className="flex gap-[5px]"
           onSubmit={(e) => {
@@ -102,9 +107,6 @@ export const TitleInput = ({
               )}]`}
               placeholder="Введіть назву поста"
               value={title}
-              onBlur={() => {
-                setTitle(filter.title!);
-              }}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
