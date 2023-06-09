@@ -108,10 +108,22 @@ router.patch("/:id/update", async (req: Request, res: Response) => {
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
+  const postToDelete = await DB()
+    .collection("news-posts")
+    .findOne({ _id: new mongoDB.ObjectId(`${id}`) });
+
   await DB()
     .collection("news-posts")
     .findOneAndDelete({ _id: new mongoDB.ObjectId(`${id}`) });
+  await DB()
+    .collection("news-categories")
+    .updateOne(
+      { _id: new mongoDB.ObjectId(`${postToDelete!.categoryID}`) },
+      { $pull: { posts: new mongoDB.ObjectId(`${id}`) } }
+    );
+
   res.status(200).json({ message: "Post has been deleted" });
 });
 
 export default router;
+
